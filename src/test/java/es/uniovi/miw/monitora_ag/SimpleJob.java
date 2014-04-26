@@ -10,6 +10,5 @@ public class SimpleJob implements Job {
 
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		counter++;
-		System.out.println(counter);
 	}
 }

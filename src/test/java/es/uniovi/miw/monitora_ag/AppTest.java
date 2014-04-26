@@ -1,38 +1,30 @@
 package es.uniovi.miw.monitora_ag;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+
+import org.junit.Test;
+
+import es.uniovi.miw.monitora.bean.Foo;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+public class AppTest {
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+	@Test
+	public void testApp() {
+		Client restClient = ClientBuilder.newClient();
+		WebTarget target = restClient
+				.target("http://localhost:8080/monitora_sv/rest/");
+		WebTarget resourceTarget = target.path("c2/test");
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+		Foo foo = (Foo) resourceTarget.request()
+				.header("Content-Type", MediaType.TEXT_XML).get(Foo.class);
+		assertEquals("OK", foo.getBar());
+	}
 }
