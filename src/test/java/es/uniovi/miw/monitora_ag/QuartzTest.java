@@ -55,17 +55,5 @@ public class QuartzTest {
 		// Tell quartz to schedule the job using our trigger
 		scheduler.scheduleJob(job, trigger);
 	}
-
-}
-
-class SimpleJob implements Job {
-
-	static public int counter;
-
-	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		counter++;
-		System.out.println(counter);
-	}
-
 }
 
