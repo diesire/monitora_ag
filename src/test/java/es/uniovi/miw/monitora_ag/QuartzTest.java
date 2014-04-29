@@ -1,15 +1,12 @@
 package es.uniovi.miw.monitora_ag;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 import org.junit.Test;
-import org.quartz.Job;
 import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;

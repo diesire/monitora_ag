@@ -29,3 +29,8 @@ TODO
 
 ---
 Thanks to [GitHub Education](https://education.github.com) for support
+
+Client TODO:
+------------
+*  Cifrado a nivel de https? encriptación de datos? los dos?
+*  
