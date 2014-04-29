@@ -21,7 +21,7 @@
 			<artifactId>monitora_core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!-- Required only when you are using JAX-RS Client -->
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
@@ -79,4 +79,13 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 </project>
