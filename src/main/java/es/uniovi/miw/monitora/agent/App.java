@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora_ag;
+package es.uniovi.miw.monitora.agent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
