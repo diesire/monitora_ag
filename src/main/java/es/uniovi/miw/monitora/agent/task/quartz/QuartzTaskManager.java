@@ -19,6 +19,7 @@ public class QuartzTaskManager implements TaskManager {
 
 	static Logger logger = LoggerFactory.getLogger(QuartzTaskManager.class);
 	private Scheduler scheduler;
+	private JobListener jobListener;
 
 	public QuartzTaskManager() {
 		try {
@@ -112,6 +113,21 @@ public class QuartzTaskManager implements TaskManager {
 			e.printStackTrace();
 		}
 		return i;
+	}
+
+	public JobListener getJobListener() {
+		return jobListener;
+	}
+
+	public void setJobListener(JobListener jobListener) {
+		this.jobListener = jobListener;
+		try {
+			scheduler.getListenerManager().addJobListener(jobListener, GroupMatcher
+					.<JobKey> anyGroup());
+		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
