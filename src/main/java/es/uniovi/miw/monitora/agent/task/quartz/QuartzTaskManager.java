@@ -27,8 +27,6 @@ public class QuartzTaskManager implements TaskManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// doSomething(scheduler, times);
-		// Thread.sleep(10000);
 	}
 
 	public void add(List<Task> tasks) {
@@ -44,12 +42,14 @@ public class QuartzTaskManager implements TaskManager {
 	private void scheduleJob(Task task) {
 		try {
 			String jobName = "job" + task.getId();
-			String groupName = "group"
-					+ task.getCreation().getTime().toString();
+			String groupName = "group" + task.getCreationDate().getTime();
 			String triggerName = "trigger" + task.getId();
+
 			JobDetail job = newJob(CommandJob.class)
 					.withIdentity(jobName, groupName)
-					.usingJobData("args", task.getCommandArgs())
+					.usingJobData("taskId", task.getId())
+					.usingJobData("resultType", task.getResultType())
+					.usingJobData("commandArgs", task.getCommandArgs())
 					.usingJobData("commandType", task.getCommandType()).build();
 
 			Trigger trigger = newTrigger()
@@ -96,15 +96,16 @@ public class QuartzTaskManager implements TaskManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int size() {
 		int i = 0;
 		try {
-			for(String group: scheduler.getJobGroupNames()) {
-			    // enumerate each job in group
-				for(JobKey jobKey : scheduler.getJobKeys(GroupMatcher.<JobKey>groupEquals(group))) {
+			for (String group : scheduler.getJobGroupNames()) {
+				// enumerate each job in group
+				for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher
+						.<JobKey> groupEquals(group))) {
 					i++;
-			    }
+				}
 			}
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
