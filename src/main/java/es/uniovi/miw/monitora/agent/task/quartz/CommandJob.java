@@ -7,7 +7,7 @@ import org.quartz.JobExecutionException;
 import es.uniovi.miw.monitora.agent.shell.apache.ApacheCommomsExecManager;
 import es.uniovi.miw.monitora.core.task.Command;
 
-public class CommandJob implements Job, Command {
+public class CommandJob implements Job {
 	private String taskId;
 	private String commandArgs;
 	private String commandType;
@@ -18,7 +18,7 @@ public class CommandJob implements Job, Command {
 		context.setResult(run());
 	}
 
-	public String getCommandType() {
+	public String getType() {
 		return commandType;
 	}
 
@@ -26,7 +26,6 @@ public class CommandJob implements Job, Command {
 		this.commandType = commandType;
 	}
 
-	@Override
 	public Object run() {
 		return new ApacheCommomsExecManager().run(commandArgs);
 	}

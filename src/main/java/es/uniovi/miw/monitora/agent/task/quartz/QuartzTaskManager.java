@@ -49,9 +49,9 @@ public class QuartzTaskManager implements TaskManager {
 			JobDetail job = newJob(CommandJob.class)
 					.withIdentity(jobName, groupName)
 					.usingJobData("taskId", task.getId())
-					.usingJobData("resultType", task.getResultType())
-					.usingJobData("commandArgs", task.getCommandArgs())
-					.usingJobData("commandType", task.getCommandType()).build();
+					.usingJobData("resultType", task.getResultType()) //XXX
+					.usingJobData("commandArgs", task.getCommandArgs()) //XXX
+					.usingJobData("commandType", task.getType()).build();
 
 			Trigger trigger = newTrigger()
 					.withIdentity(triggerName, groupName)
