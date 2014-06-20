@@ -48,7 +48,7 @@ public class AppTest {
 	@Test
 	public void testRawTasks() {
 		List<Task> tasks = getTasks();
-		assertEquals(2, tasks.size());
+		assertEquals(3, tasks.size());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class AppTest {
 		taskManager.add(getTasks());
 		try {
 			Thread.sleep(2000);
-			assertEquals(2, taskManager.size());
+			assertEquals(3, taskManager.size());
 			taskManager.stop();
 		} catch (InterruptedException e) {
 			fail();
@@ -75,12 +75,12 @@ public class AppTest {
 		taskManager.setJobListener(snapshotJobListener);
 		try {
 			Thread.sleep(10000);
-			assertEquals(2, taskManager.size());
+			assertEquals(3, taskManager.size());
 			taskManager.stop();
 		} catch (InterruptedException e) {
 			fail();
 		}
-		assertEquals(2, snapshotManager.getSnapshot().tasks.size());
+		assertEquals(3, snapshotManager.getSnapshot().tasks.size());
 		assertNotNull(snapshotManager.getSnapshot().results.size());
 	}
 

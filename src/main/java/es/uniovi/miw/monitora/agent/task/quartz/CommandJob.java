@@ -3,9 +3,7 @@ package es.uniovi.miw.monitora.agent.task.quartz;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
 import es.uniovi.miw.monitora.agent.shell.apache.ApacheCommomsExecManager;
-import es.uniovi.miw.monitora.core.task.Command;
 
 public class CommandJob implements Job {
 	private String taskId;
