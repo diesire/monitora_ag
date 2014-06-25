@@ -69,7 +69,7 @@ public class PersistenceTest {
 		cliente = new Cliente();
 		
 		agente.setCliente(cliente);
-		cliente.addAgente(agente);
+		cliente.addAgente(agente);		
 
 		res.add(agente);
 		res.add(cliente);
