@@ -1,3 +1,9 @@
 /target
 
 data/test.properties
+
+hibernate.log
+
+data/test.log
+
+data/test.lck
