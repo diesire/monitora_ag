@@ -7,3 +7,5 @@ hibernate.log
 data/test.log
 
 data/test.lck
+
+data/test.properties
