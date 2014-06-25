@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -27,7 +28,7 @@ public class Cliente implements Serializable {
 
 	//bi-directional many-to-one association to Agente
 	@OneToMany(mappedBy="cliente")
-	private Set<Agente> agentes;
+	private Set<Agente> agentes = new HashSet<Agente>();
 
 	//bi-directional many-to-one association to Destino
 	@OneToMany(mappedBy="cliente")
