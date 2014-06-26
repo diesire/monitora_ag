@@ -99,7 +99,7 @@ public class PersistenceTest {
 	}
 
 	private List<Object> mergeGraph(EntityManager mapper) {
-		logger.debug("mergeGraph (from mapper {}), mapper");
+		logger.debug("mergeGraph (from mapper {})", mapper);
 		List<Object> res = new LinkedList<Object>();
 		Cliente cl = mapper.merge(cliente);
 
