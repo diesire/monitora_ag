@@ -1,15 +1,14 @@
 package es.uniovi.miw.monitora.agent.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
-/**
- * The persistent class for the INFORME database table.
- * 
- */
 @Entity
 public class Informe implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -32,7 +31,7 @@ public class Informe implements Serializable {
 
 	//bi-directional many-to-one association to InformeConsulta
 	@OneToMany(mappedBy="informe")
-	private Set<InformeConsulta> informeConsultas;
+	private Set<InformeConsulta> informeConsultas = new HashSet<InformeConsulta>();
 
 	//bi-directional many-to-many association to Informe
 	@ManyToMany
@@ -53,7 +52,7 @@ public class Informe implements Serializable {
 
 	//bi-directional many-to-one association to InformeTipoDestino
 	@OneToMany(mappedBy="informe")
-	private Set<InformeTipoDestino> informeTipoDestinos;
+	private Set<InformeTipoDestino> informeTipoDestinos = new HashSet<InformeTipoDestino>();
 
 	//bi-directional many-to-one association to InfPlanDest
 	@OneToMany(mappedBy="informe")
@@ -210,4 +209,38 @@ public class Informe implements Serializable {
 		return snapshot;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + infoId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Informe other = (Informe) obj;
+		if (infoId != other.infoId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Informe [infoId=").append(infoId)
+				.append(", descLarga=").append(descLarga)
+				.append(", fUltimaModificacion=").append(fUltimaModificacion)
+				.append(", idPlan=").append(idPlan).append(", nombre=")
+				.append(nombre).append("]");
+		return builder.toString();
+	}
+	
+	
 }

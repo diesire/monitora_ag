@@ -1,7 +1,10 @@
 package es.uniovi.miw.monitora.agent.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -25,11 +28,11 @@ public class TipoDestino implements Serializable {
 
 	//bi-directional many-to-many association to Consulta
 	@ManyToMany(mappedBy="tipoDestinos")
-	private Set<Consulta> consultas;
+	private Set<Consulta> consultas = new HashSet<Consulta>();
 
 	//bi-directional many-to-one association to InformeTipoDestino
 	@OneToMany(mappedBy="tipoDestino")
-	private Set<InformeTipoDestino> informeTipoDestinos;
+	private Set<InformeTipoDestino> informeTipoDestinos = new HashSet<InformeTipoDestino>();
 
 	public TipoDestino() {
 	}
@@ -65,6 +68,18 @@ public class TipoDestino implements Serializable {
 	public void setConsultas(Set<Consulta> consultas) {
 		this.consultas = consultas;
 	}
+	
+	public Consulta addConsulta(Consulta consulta) {
+		getConsultas().add(consulta);
+		
+		return consulta;
+	}
+	
+	public Consulta removeConsulta(Consulta consulta) {
+		getConsultas().remove(consulta);
+		
+		return consulta;
+	}
 
 	public Set<InformeTipoDestino> getInformeTipoDestinos() {
 		return this.informeTipoDestinos;
@@ -87,5 +102,38 @@ public class TipoDestino implements Serializable {
 
 		return informeTipoDestino;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idTipoDestino;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TipoDestino other = (TipoDestino) obj;
+		if (idTipoDestino != other.idTipoDestino)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TipoDestino [idTipoDestino=").append(idTipoDestino)
+				.append(", descripcion=").append(descripcion)
+				.append(", nombreCorto=").append(nombreCorto).append("]");
+		return builder.toString();
+	}
+	
+	
 
 }

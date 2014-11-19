@@ -1,6 +1,7 @@
 package es.uniovi.miw.monitora.agent.model.keys;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -54,4 +55,13 @@ public class InformeTipoDestinoPK implements Serializable {
 		
 		return hash;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("InformeTipoDestinoPK [idInforme=").append(idInforme)
+				.append(", idTipoDestino=").append(idTipoDestino).append("]");
+		return builder.toString();
+	}
+	
+	
 }
