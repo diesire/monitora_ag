@@ -55,7 +55,7 @@ public class Informe implements Serializable {
 	private Set<InformeTipoDestino> informeTipoDestinos = new HashSet<InformeTipoDestino>();
 
 	//bi-directional many-to-one association to InfPlanDest
-	@OneToMany(mappedBy="informe")
+	@OneToMany(mappedBy="informe", orphanRemoval = true)
 	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
 	//bi-directional many-to-one association to Snapshot

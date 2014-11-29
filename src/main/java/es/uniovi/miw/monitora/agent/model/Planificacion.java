@@ -27,7 +27,7 @@ public class Planificacion implements Serializable {
 	private Date fUltimaModificacion;
 
 	// bi-directional many-to-one association to InfPlanDest
-	@OneToMany(mappedBy = "planificacion")
+	@OneToMany(mappedBy = "planificacion", orphanRemoval = true)
 	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
 	// bi-directional many-to-one association to LineaCron

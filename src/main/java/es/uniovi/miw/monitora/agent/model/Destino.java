@@ -38,7 +38,7 @@ public class Destino implements Serializable {
 	private Cliente cliente;
 
 	// bi-directional many-to-one association to InfPlanDest
-	@OneToMany(mappedBy = "destino")
+	@OneToMany(mappedBy = "destino", orphanRemoval = true)
 	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
 	// bi-directional many-to-one association to Snapshot
@@ -71,16 +71,16 @@ public class Destino implements Serializable {
 	public void setAgentes(Set<Agente> agentes) {
 		this.agentes = agentes;
 	}
-	
+
 	public Agente addAgente(Agente agente) {
 		agentes.add(agente);
-		
+
 		return agente;
 	}
-	
+
 	public Agente removeAgente(Agente agente) {
 		agentes.remove(agente);
-		
+
 		return agente;
 	}
 

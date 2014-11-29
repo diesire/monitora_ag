@@ -15,43 +15,41 @@ import javax.persistence.TemporalType;
 
 import es.uniovi.miw.monitora.agent.model.keys.InfPlanDestPK;
 
-
 /**
  * The persistent class for the INF_PLAN_DEST database table.
  * 
  */
 @Entity
-@Table(name="INF_PLAN_DEST")
+@Table(name = "INF_PLAN_DEST")
 public class InfPlanDest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private InfPlanDestPK id;
+	private InfPlanDestPK id = new InfPlanDestPK();
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="F_ULTIMA_APLICACION")
+	@Column(name = "F_ULTIMA_APLICACION")
 	private Date fUltimaAplicacion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="F_ULTIMA_MODIFICACION")
+	@Column(name = "F_ULTIMA_MODIFICACION")
 	private Date fUltimaModificacion;
 
-	//bi-directional many-to-one association to Destino
+	// bi-directional many-to-one association to Destino
 	@ManyToOne
 	@JoinColumns({
-		@JoinColumn(name="ID_CLIENTE", referencedColumnName="ID_CLIENTE", insertable=false, updatable=false),
-		@JoinColumn(name="ID_DESTINO", referencedColumnName="ID_DESTINO", insertable=false, updatable=false)
-		})
+			@JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE", insertable = false, updatable = false),
+			@JoinColumn(name = "ID_DESTINO", referencedColumnName = "ID_DESTINO", insertable = false, updatable = false) })
 	private Destino destino;
 
-	//bi-directional many-to-one association to Informe
+	// bi-directional many-to-one association to Informe
 	@ManyToOne
-	@JoinColumn(name="ID_INFORME", insertable=false, updatable=false)
+	@JoinColumn(name = "ID_INFORME", insertable = false, updatable = false)
 	private Informe informe;
 
-	//bi-directional many-to-one association to Planificacion
+	// bi-directional many-to-one association to Planificacion
 	@ManyToOne
-	@JoinColumn(name="ID_PLAN")
+	@JoinColumn(name = "ID_PLAN")
 	private Planificacion planificacion;
 
 	public InfPlanDest() {
@@ -87,6 +85,8 @@ public class InfPlanDest implements Serializable {
 
 	public void setDestino(Destino destino) {
 		this.destino = destino;
+		getId().setIdDestino(destino.getId().getIdDestino());
+		getId().setIdCliente(destino.getId().getIdCliente());
 	}
 
 	public Informe getInforme() {
@@ -95,6 +95,7 @@ public class InfPlanDest implements Serializable {
 
 	public void setInforme(Informe informe) {
 		this.informe = informe;
+		getId().setIdInforme(informe.getInfoId());
 	}
 
 	public Planificacion getPlanificacion() {
@@ -103,6 +104,41 @@ public class InfPlanDest implements Serializable {
 
 	public void setPlanificacion(Planificacion planificacion) {
 		this.planificacion = planificacion;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InfPlanDest other = (InfPlanDest) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("InfPlanDest [id=").append(id)
+				.append(", fUltimaAplicacion=").append(fUltimaAplicacion)
+				.append(", fUltimaModificacion=").append(fUltimaModificacion)
+				.append("]");
+		return builder.toString();
 	}
 
 }
