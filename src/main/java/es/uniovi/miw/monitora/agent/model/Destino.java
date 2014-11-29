@@ -71,6 +71,18 @@ public class Destino implements Serializable {
 	public void setAgentes(Set<Agente> agentes) {
 		this.agentes = agentes;
 	}
+	
+	public Agente addAgente(Agente agente) {
+		agentes.add(agente);
+		
+		return agente;
+	}
+	
+	public Agente removeAgente(Agente agente) {
+		agentes.remove(agente);
+		
+		return agente;
+	}
 
 	public Cliente getCliente() {
 		return this.cliente;

@@ -79,6 +79,18 @@ public class Agente implements Serializable {
 	public void setDestinos(Set<Destino> destinos) {
 		this.destinos = destinos;
 	}
+	
+	public Destino addDestino(Destino destino) {
+		destinos.add(destino);
+
+		return destino;
+	}
+
+	public Destino removeDestino(Destino destino) {
+		destinos.remove(destino);
+
+		return destino;
+	}
 
 	@Override
 	public int hashCode() {
@@ -107,7 +119,8 @@ public class Agente implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Agente [agenteId=").append(agenteId)
 				.append(", comentarios=").append(comentarios)
-				.append(", clienteId=").append(cliente.getIdCliente()) //TODO borrar
+				.append(", clienteId=").append(cliente.getIdCliente()) // TODO
+																		// borrar
 				.append(", ipAgente=").append(ipAgente).append("]");
 		return builder.toString();
 	}

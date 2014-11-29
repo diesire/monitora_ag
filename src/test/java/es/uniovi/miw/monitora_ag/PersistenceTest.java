@@ -64,9 +64,11 @@ public class PersistenceTest {
 
 		Agente ag = mapper.merge(agente);
 		Cliente cl = mapper.merge(cliente);
+		Destino des = mapper.merge(destino);
 
 		assertNotNull(ag.getCliente());
 		assertEquals(cl, ag.getCliente());
+		assertTrue(ag.getDestinos().contains(des));
 
 		trx.commit();
 		mapper.close();
@@ -178,9 +180,11 @@ public class PersistenceTest {
 
 		Destino des = mapper.merge(destino);
 		Cliente cli = mapper.merge(cliente);
+		Agente ag = mapper.merge(agente);
 
 		assertEquals(cli, des.getCliente());
 		assertEquals(cli.getIdCliente(), des.getId().getIdCliente());
+		assertTrue(des.getAgentes().contains(ag));
 
 		trx.commit();
 		mapper.close();
@@ -247,8 +251,10 @@ public class PersistenceTest {
 
 		// link
 		cliente.addAgente(agente);
-
 		cliente.addDestino(destino);
+		
+		agente.addDestino(destino);
+		destino.addAgente(agente);
 
 		informePadre.addInformeConsulta(informeConsulta);
 		consulta.addInformeConsulta(informeConsulta);
