@@ -24,6 +24,7 @@ import es.uniovi.miw.monitora.agent.model.Destino;
 import es.uniovi.miw.monitora.agent.model.Informe;
 import es.uniovi.miw.monitora.agent.model.InformeConsulta;
 import es.uniovi.miw.monitora.agent.model.InformeTipoDestino;
+import es.uniovi.miw.monitora.agent.model.Snapshot;
 import es.uniovi.miw.monitora.agent.model.TipoDestino;
 
 public class PersistenceTest {
@@ -40,6 +41,8 @@ public class PersistenceTest {
 	private TipoDestino tipoDestino;
 	private InformeTipoDestino informeTipoDestino;
 	private Destino destino;
+	private Snapshot snapshot;
+	private Date fecha;
 
 	@Before
 	public void setUp() {
@@ -104,6 +107,8 @@ public class PersistenceTest {
 		assertEquals("Nombre", in1.getNombre());
 		assertTrue(in1.getContenidos().contains(in2));
 		assertTrue(in2.getContenedores().contains(in1));
+		assertEquals(fecha, in1.getFUltimaModificacion());
+		assertEquals(fecha, in2.getFUltimaModificacion());
 
 		trx.commit();
 		mapper.close();
@@ -118,9 +123,10 @@ public class PersistenceTest {
 
 		Consulta co = mapper.merge(consulta);
 		TipoDestino tDes = mapper.merge(tipoDestino);
-		
+
 		assertEquals("S", co.getTipo());
 		assertTrue(co.getTipoDestinos().contains(tDes));
+		assertEquals(fecha, co.getFUltimaModificacion());
 
 		trx.commit();
 		mapper.close();
@@ -137,6 +143,7 @@ public class PersistenceTest {
 		Consulta co = mapper.merge(consulta);
 		assertTrue(in.getInformeConsultas().containsAll(
 				co.getInformeConsultas()));
+		assertEquals(fecha, in.getFUltimaModificacion());
 
 		trx.commit();
 		mapper.close();
@@ -195,6 +202,25 @@ public class PersistenceTest {
 		mapper.close();
 	}
 
+	@Test
+	public void testSnapshot() {
+		logger.debug("testSnapshot");
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Snapshot snap = mapper.merge(snapshot);
+		Informe in = mapper.merge(informePadre);
+		Destino des = mapper.merge(destino);
+
+		assertEquals(in, snap.getInforme());
+		assertEquals(des, snap.getDestino());
+		assertEquals(fecha, snap.getFecha());
+
+		trx.commit();
+		mapper.close();
+	}
+
 	private void persistGraph(List<Object> graph) {
 		logger.debug("persistGraph {}", graph);
 		EntityManager mapper = factory.createEntityManager();
@@ -214,19 +240,19 @@ public class PersistenceTest {
 		logger.debug("createGraph");
 		List<Object> res = new LinkedList<Object>();
 
+		fecha = new Date(System.currentTimeMillis());
+
 		informePadre = new Informe();
 		informePadre.setNombre("Nombre");
 		informePadre.setDescLarga("DescLarga");
-		informePadre
-				.setFUltimaModificacion(new Date(System.currentTimeMillis()));
+		informePadre.setFUltimaModificacion(fecha);
 		informePadre.setIdPlan(0);
 		informePadre.setInfoId(0);
 
 		informeHijo = new Informe();
 		informeHijo.setNombre("Nombre");
 		informeHijo.setDescLarga("DescLarga");
-		informeHijo
-				.setFUltimaModificacion(new Date(System.currentTimeMillis()));
+		informeHijo.setFUltimaModificacion(fecha);
 		informeHijo.setIdPlan(0);
 		informeHijo.setInfoId(1);
 
@@ -234,11 +260,10 @@ public class PersistenceTest {
 		consulta.setTipo("S");
 		consulta.setDescCorta("DescCorta");
 		consulta.setDescLarga("DescLarga");
-		consulta.setFUltimaModificacion(new Date(System.currentTimeMillis()));
+		consulta.setFUltimaModificacion(fecha);
 
 		informeConsulta = new InformeConsulta();
-		informeConsulta.setFUltimaModificacion(new Date(System
-				.currentTimeMillis()));
+		informeConsulta.setFUltimaModificacion(fecha);
 
 		informeTipoDestino = new InformeTipoDestino();
 		informeTipoDestino.setPorDefecto("PorDefecto");
@@ -249,15 +274,23 @@ public class PersistenceTest {
 
 		cliente = new Cliente();
 		cliente.setNombre("Cliente");
+
 		agente = new Agente();
 		agente.setComentarios("Comentarios");
 
 		destino = new Destino();
 
+		snapshot = new Snapshot();
+		snapshot.setFecha(fecha);
+
 		// link
+
+		informePadre.addSnapshot(snapshot);
+		destino.addSnapshot(snapshot);
+
 		cliente.addAgente(agente);
 		cliente.addDestino(destino);
-		
+
 		agente.addDestino(destino);
 		destino.addAgente(agente);
 
@@ -279,6 +312,7 @@ public class PersistenceTest {
 		res.add(consulta);
 		res.add(tipoDestino);
 		res.add(destino);
+		res.add(snapshot);
 
 		logger.debug("\t -> {}", res);
 		return res;
@@ -294,6 +328,7 @@ public class PersistenceTest {
 		Consulta cons = mapper.merge(consulta);
 		TipoDestino tDes = mapper.merge(tipoDestino);
 		Destino des = mapper.merge(destino);
+		Snapshot snap = mapper.merge(snapshot);
 
 		res.add(cl);
 		res.add(ag);
@@ -302,6 +337,7 @@ public class PersistenceTest {
 		res.add(tDes);
 		res.add(in2);
 		res.add(des);
+		res.add(snap);
 
 		logger.debug("\t -> {}", res);
 		return res;

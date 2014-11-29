@@ -42,7 +42,7 @@ public class Destino implements Serializable {
 	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
 	// bi-directional many-to-one association to Snapshot
-	@OneToMany(mappedBy = "destino")
+	@OneToMany(mappedBy = "destino", orphanRemoval = true)
 	private Set<Snapshot> snapshots = new HashSet<Snapshot>();
 
 	public Destino() {

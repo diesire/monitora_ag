@@ -56,11 +56,11 @@ public class Informe implements Serializable {
 
 	//bi-directional many-to-one association to InfPlanDest
 	@OneToMany(mappedBy="informe")
-	private Set<InfPlanDest> infPlanDests;
+	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
 	//bi-directional many-to-one association to Snapshot
-	@OneToMany(mappedBy="informe")
-	private Set<Snapshot> snapshots;
+	@OneToMany(mappedBy="informe", orphanRemoval = true)
+	private Set<Snapshot> snapshots = new HashSet<Snapshot>();
 
 	public Informe() {
 	}

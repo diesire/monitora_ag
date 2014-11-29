@@ -1,6 +1,7 @@
 package es.uniovi.miw.monitora.agent.model.keys;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -77,5 +78,15 @@ public class SnapshotPK implements Serializable {
 		hash = hash * prime + this.idInforme;
 		
 		return hash;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SnapshotPK [idSnapshot=").append(idSnapshot)
+				.append(", idCliente=").append(idCliente)
+				.append(", idDestino=").append(idDestino)
+				.append(", idInforme=").append(idInforme).append("]");
+		return builder.toString();
 	}
 }
