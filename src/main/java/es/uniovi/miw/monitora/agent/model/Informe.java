@@ -44,11 +44,11 @@ public class Informe implements Serializable {
 			@JoinColumn(name="ID_INFORME_CONTIENE")
 			}
 		)
-	private Set<Informe> informes1;
+	private Set<Informe> contenidos = new HashSet<Informe>();
 
 	//bi-directional many-to-many association to Informe
-	@ManyToMany(mappedBy="informes1")
-	private Set<Informe> informes2;
+	@ManyToMany(mappedBy="contenidos")
+	private Set<Informe> contenedores = new HashSet<Informe>();
 
 	//bi-directional many-to-one association to InformeTipoDestino
 	@OneToMany(mappedBy="informe")
@@ -127,20 +127,34 @@ public class Informe implements Serializable {
 		return informeConsulta;
 	}
 
-	public Set<Informe> getInformes1() {
-		return this.informes1;
+	public Set<Informe> getContenidos() {
+		return this.contenidos;
 	}
 
-	public void setInformes1(Set<Informe> informes1) {
-		this.informes1 = informes1;
+	public void setContenidos(Set<Informe> contenidos) {
+		this.contenidos = contenidos;
 	}
 
-	public Set<Informe> getInformes2() {
-		return this.informes2;
+	public Set<Informe> getContenedores() {
+		return this.contenedores;
 	}
 
-	public void setInformes2(Set<Informe> informes2) {
-		this.informes2 = informes2;
+	public void setContenedores(Set<Informe> contenedores) {
+		this.contenedores = contenedores;
+	}
+	
+	public Informe addContenido(Informe informe) {
+		getContenidos().add(informe);
+		informe.getContenedores().add(this);
+		
+		return informe;
+	}
+	
+	public Informe removeContenido(Informe informe) {
+		informe.getContenedores().remove(this);
+		getContenidos().remove(informe);
+		
+		return informe;
 	}
 
 	public Set<InformeTipoDestino> getInformeTipoDestinos() {

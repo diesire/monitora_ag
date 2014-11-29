@@ -10,30 +10,34 @@ import javax.persistence.*;
  */
 @Embeddable
 public class InformeTipoDestinoPK implements Serializable {
-	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="ID_INFORME", insertable=false, updatable=false)
+	@Column(name = "ID_INFORME", insertable = false, updatable = false)
 	private int idInforme;
 
-	@Column(name="ID_TIPO_DESTINO", insertable=false, updatable=false)
+	@Column(name = "ID_TIPO_DESTINO", insertable = false, updatable = false)
 	private int idTipoDestino;
 
 	public InformeTipoDestinoPK() {
 	}
+
 	public int getIdInforme() {
 		return this.idInforme;
 	}
+
 	public void setIdInforme(int idInforme) {
 		this.idInforme = idInforme;
 	}
+
 	public int getIdTipoDestino() {
 		return this.idTipoDestino;
 	}
+
 	public void setIdTipoDestino(int idTipoDestino) {
 		this.idTipoDestino = idTipoDestino;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -41,20 +45,21 @@ public class InformeTipoDestinoPK implements Serializable {
 		if (!(other instanceof InformeTipoDestinoPK)) {
 			return false;
 		}
-		InformeTipoDestinoPK castOther = (InformeTipoDestinoPK)other;
-		return 
-			(this.idInforme == castOther.idInforme)
-			&& (this.idTipoDestino == castOther.idTipoDestino);
+		InformeTipoDestinoPK castOther = (InformeTipoDestinoPK) other;
+		return (this.idInforme == castOther.idInforme)
+				&& (this.idTipoDestino == castOther.idTipoDestino);
 	}
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.idInforme;
 		hash = hash * prime + this.idTipoDestino;
-		
+
 		return hash;
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -62,6 +67,5 @@ public class InformeTipoDestinoPK implements Serializable {
 				.append(", idTipoDestino=").append(idTipoDestino).append("]");
 		return builder.toString();
 	}
-	
-	
+
 }

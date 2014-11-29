@@ -11,6 +11,7 @@ public class CommandJob implements Job {
 	private String commandType;
 	private String resultType;
 
+	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
 		context.setResult(run());

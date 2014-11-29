@@ -24,6 +24,7 @@ public class SnapshotJobListener extends JobListenerSupport {
 		this.snapshotManager = snapshotManager;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -31,11 +32,11 @@ public class SnapshotJobListener extends JobListenerSupport {
 	@Override
 	public void jobWasExecuted(JobExecutionContext context,
 			JobExecutionException jobException) {
-		TaskResult result = snapshotManager.createResult((String) context
+		TaskResult result = snapshotManager.createResult(context
 				.getJobDetail().getJobDataMap().getString("resultType"), context.getResult());
 		result.startDate = new GregorianCalendar();
 		result.startDate.setTime(context.getFireTime());
-		result.taskId = (String) context.getJobDetail().getJobDataMap()
+		result.taskId = context.getJobDetail().getJobDataMap()
 				.getString("taskId");
 		logger.debug("created {}", result);
 

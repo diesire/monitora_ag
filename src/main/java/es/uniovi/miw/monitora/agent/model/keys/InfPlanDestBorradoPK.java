@@ -51,6 +51,7 @@ public class InfPlanDestBorradoPK implements Serializable {
 		this.idPlan = idPlan;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -66,6 +67,7 @@ public class InfPlanDestBorradoPK implements Serializable {
 			&& (this.idPlan == castOther.idPlan);
 	}
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;

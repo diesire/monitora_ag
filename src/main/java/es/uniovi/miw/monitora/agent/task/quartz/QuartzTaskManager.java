@@ -30,12 +30,14 @@ public class QuartzTaskManager implements TaskManager {
 		}
 	}
 
+	@Override
 	public void add(List<Task> tasks) {
 		for (Task task : tasks) {
 			add(task);
 		}
 	}
 
+	@Override
 	public void add(Task task) {
 		scheduleJob(task);
 	}
@@ -80,6 +82,7 @@ public class QuartzTaskManager implements TaskManager {
 		}
 	}
 
+	@Override
 	public void start() {
 		try {
 			scheduler.start();
@@ -89,6 +92,7 @@ public class QuartzTaskManager implements TaskManager {
 		}
 	}
 
+	@Override
 	public void stop() {
 		try {
 			scheduler.shutdown();
@@ -98,6 +102,7 @@ public class QuartzTaskManager implements TaskManager {
 		}
 	}
 
+	@Override
 	public int size() {
 		int i = 0;
 		try {
