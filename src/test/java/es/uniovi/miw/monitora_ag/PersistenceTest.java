@@ -56,6 +56,7 @@ public class PersistenceTest {
 		factory.close();
 	}
 
+	@Test
 	public void testAgente() {
 		logger.debug("testAgente");
 		EntityManager mapper = factory.createEntityManager();
@@ -74,6 +75,7 @@ public class PersistenceTest {
 		mapper.close();
 	}
 
+	@Test
 	public void testCliente() {
 		logger.debug("testCliente");
 		EntityManager mapper = factory.createEntityManager();
