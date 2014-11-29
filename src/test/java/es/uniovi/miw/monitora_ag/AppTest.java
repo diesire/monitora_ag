@@ -38,7 +38,7 @@ public class AppTest {
 		String clientId = "AppTestClient";
 		WebTarget resourceTarget = target.path("c2/ping/" + clientId);
 
-		Ack ack = (Ack) resourceTarget.request()
+		Ack ack = resourceTarget.request()
 				.header("Content-Type", MediaType.APPLICATION_JSON)
 				.get(Ack.class);
 

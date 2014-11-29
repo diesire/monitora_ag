@@ -11,7 +11,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.hsqldb.lib.InOutUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,8 +60,8 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		Agente ag = (Agente) mapper.merge(agente);
-		Cliente cl = (Cliente) mapper.merge(cliente);
+		Agente ag = mapper.merge(agente);
+		Cliente cl = mapper.merge(cliente);
 
 		assertNotNull(ag.getCliente());
 		assertEquals(cl, ag.getCliente());
@@ -77,8 +76,8 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		Cliente cl = (Cliente) mapper.merge(cliente);
-		Agente ag = (Agente) mapper.merge(agente);
+		Cliente cl = mapper.merge(cliente);
+		Agente ag = mapper.merge(agente);
 
 		assertEquals("Cliente", cl.getNombre());
 		assertTrue(cl.getAgentes().contains(ag));
@@ -94,8 +93,8 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		Informe in1 = (Informe) mapper.merge(informePadre);
-		Informe in2 = (Informe) mapper.merge(informeHijo);
+		Informe in1 = mapper.merge(informePadre);
+		Informe in2 = mapper.merge(informeHijo);
 		assertEquals("Nombre", in1.getNombre());
 		assertTrue(in1.getContenidos().contains(in2));
 		assertTrue(in2.getContenedores().contains(in1));
@@ -111,7 +110,7 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		Consulta co = (Consulta) mapper.merge(consulta);
+		Consulta co = mapper.merge(consulta);
 		assertEquals("S", co.getTipo());
 
 		trx.commit();
@@ -125,8 +124,8 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		Informe in = (Informe) mapper.merge(informePadre);
-		Consulta co = (Consulta) mapper.merge(consulta);
+		Informe in = mapper.merge(informePadre);
+		Consulta co = mapper.merge(consulta);
 		assertTrue(in.getInformeConsultas().containsAll(
 				co.getInformeConsultas()));
 
@@ -141,8 +140,8 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		TipoDestino tDes = (TipoDestino) mapper.merge(tipoDestino);
-		Consulta co = (Consulta) mapper.merge(consulta);
+		TipoDestino tDes = mapper.merge(tipoDestino);
+		Consulta co = mapper.merge(consulta);
 
 		assertTrue(tDes.getConsultas().contains(co));
 		assertTrue(co.getTipoDestinos().contains(tDes));
@@ -158,8 +157,8 @@ public class PersistenceTest {
 		EntityTransaction trx = mapper.getTransaction();
 		trx.begin();
 
-		TipoDestino tDes = (TipoDestino) mapper.merge(tipoDestino);
-		Informe co = (Informe) mapper.merge(informePadre);
+		TipoDestino tDes = mapper.merge(tipoDestino);
+		Informe co = mapper.merge(informePadre);
 
 		assertTrue(tDes.getInformeTipoDestinos().containsAll(
 				co.getInformeTipoDestinos()));
@@ -222,6 +221,7 @@ public class PersistenceTest {
 
 		cliente = new Cliente();
 		cliente.setNombre("Cliente");
+
 		agente = new Agente();
 		agente.setComentarios("Comentarios");
 
@@ -245,7 +245,6 @@ public class PersistenceTest {
 		res.add(informePadre);
 		res.add(consulta);
 		res.add(tipoDestino);
-		
 
 		logger.debug("\t -> {}", res);
 		return res;
