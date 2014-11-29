@@ -31,7 +31,7 @@ public class Planificacion implements Serializable {
 	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
 	// bi-directional many-to-one association to LineaCron
-	@OneToMany(mappedBy = "planificacion")
+	@OneToMany(mappedBy = "planificacion", orphanRemoval = true)
 	private Set<LineaCron> lineaCrons = new HashSet<LineaCron>();
 
 	public Planificacion() {

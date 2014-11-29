@@ -24,6 +24,7 @@ import es.uniovi.miw.monitora.agent.model.Destino;
 import es.uniovi.miw.monitora.agent.model.Informe;
 import es.uniovi.miw.monitora.agent.model.InformeConsulta;
 import es.uniovi.miw.monitora.agent.model.InformeTipoDestino;
+import es.uniovi.miw.monitora.agent.model.LineaCron;
 import es.uniovi.miw.monitora.agent.model.Planificacion;
 import es.uniovi.miw.monitora.agent.model.Snapshot;
 import es.uniovi.miw.monitora.agent.model.TipoDestino;
@@ -45,6 +46,8 @@ public class PersistenceTest {
 	private Snapshot snapshot;
 	private Date fecha;
 	private Planificacion planificacion;
+	private LineaCron linea1;
+	private LineaCron linea2;
 
 	@Before
 	public void setUp() {
@@ -238,6 +241,22 @@ public class PersistenceTest {
 		mapper.close();
 	}
 
+	@Test
+	public void testLineaCron() {
+		logger.debug("testLineaCron");
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		LineaCron l1 = mapper.merge(linea1);
+
+		assertEquals("Descripcion", l1.getDescripcion());
+		assertEquals(fecha, l1.getFUltimaModificacion());
+
+		trx.commit();
+		mapper.close();
+	}
+
 	private void persistGraph(List<Object> graph) {
 		logger.debug("persistGraph {}", graph);
 		EntityManager mapper = factory.createEntityManager();
@@ -303,7 +322,18 @@ public class PersistenceTest {
 		planificacion = new Planificacion();
 		planificacion.setFUltimaModificacion(fecha);
 
+		linea1 = new LineaCron();
+		linea1.setDescripcion("Descripcion");
+		linea1.setFUltimaModificacion(fecha);
+
+		linea2 = new LineaCron();
+		linea2.setDescripcion("Descripcion");
+		linea2.setFUltimaModificacion(fecha);
+		linea2.setIdLineaCron(1); // FIXME: auto id
+
 		// link
+		planificacion.addLineaCron(linea1);
+		planificacion.addLineaCron(linea2);
 
 		informePadre.addSnapshot(snapshot);
 		destino.addSnapshot(snapshot);
@@ -334,6 +364,8 @@ public class PersistenceTest {
 		res.add(destino);
 		res.add(snapshot);
 		res.add(planificacion);
+		res.add(linea1);
+		res.add(linea2);
 
 		logger.debug("\t -> {}", res);
 		return res;
@@ -351,6 +383,8 @@ public class PersistenceTest {
 		Destino des = mapper.merge(destino);
 		Snapshot snap = mapper.merge(snapshot);
 		Planificacion plan = mapper.merge(planificacion);
+		LineaCron l1 = mapper.merge(linea1);
+		LineaCron l2 = mapper.merge(linea2);
 
 		res.add(cl);
 		res.add(ag);
@@ -361,6 +395,8 @@ public class PersistenceTest {
 		res.add(des);
 		res.add(snap);
 		res.add(plan);
+		res.add(l1);
+		res.add(l2);
 
 		logger.debug("\t -> {}", res);
 		return res;

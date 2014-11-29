@@ -4,29 +4,28 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
-
 /**
  * The persistent class for the LINEA_CRON database table.
  * 
  */
 @Entity
-@Table(name="LINEA_CRON")
+@Table(name = "LINEA_CRON")
 public class LineaCron implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID_LINEA_CRON")
+	@Column(name = "ID_LINEA_CRON")
 	private int idLineaCron;
 
 	private String descripcion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="F_ULTIMA_MODIFICACION")
+	@Column(name = "F_ULTIMA_MODIFICACION")
 	private Date fUltimaModificacion;
 
-	//bi-directional many-to-one association to Planificacion
+	// bi-directional many-to-one association to Planificacion
 	@ManyToOne
-	@JoinColumn(name="ID_PLAN")
+	@JoinColumn(name = "ID_PLAN")
 	private Planificacion planificacion;
 
 	public LineaCron() {
