@@ -1,10 +1,12 @@
 package es.uniovi.miw.monitora.agent.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
 
+import javax.persistence.*;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The persistent class for the PLANIFICACION database table.
@@ -15,22 +17,22 @@ public class Planificacion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID_PLAN")
+	@Column(name = "ID_PLAN")
 	private int idPlan;
 
 	private String descripcion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="F_ULTIMA_MODIFICACION")
+	@Column(name = "F_ULTIMA_MODIFICACION")
 	private Date fUltimaModificacion;
 
-	//bi-directional many-to-one association to InfPlanDest
-	@OneToMany(mappedBy="planificacion")
-	private Set<InfPlanDest> infPlanDests;
+	// bi-directional many-to-one association to InfPlanDest
+	@OneToMany(mappedBy = "planificacion")
+	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
-	//bi-directional many-to-one association to LineaCron
-	@OneToMany(mappedBy="planificacion")
-	private Set<LineaCron> lineaCrons;
+	// bi-directional many-to-one association to LineaCron
+	@OneToMany(mappedBy = "planificacion")
+	private Set<LineaCron> lineaCrons = new HashSet<LineaCron>();
 
 	public Planificacion() {
 	}
@@ -101,6 +103,38 @@ public class Planificacion implements Serializable {
 		lineaCron.setPlanificacion(null);
 
 		return lineaCron;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idPlan;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Planificacion other = (Planificacion) obj;
+		if (idPlan != other.idPlan)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Planificacion [idPlan=").append(idPlan)
+				.append(", descripcion=").append(descripcion)
+				.append(", fUltimaModificacion=").append(fUltimaModificacion)
+				.append("]");
+		return builder.toString();
 	}
 
 }

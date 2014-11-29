@@ -24,6 +24,7 @@ import es.uniovi.miw.monitora.agent.model.Destino;
 import es.uniovi.miw.monitora.agent.model.Informe;
 import es.uniovi.miw.monitora.agent.model.InformeConsulta;
 import es.uniovi.miw.monitora.agent.model.InformeTipoDestino;
+import es.uniovi.miw.monitora.agent.model.Planificacion;
 import es.uniovi.miw.monitora.agent.model.Snapshot;
 import es.uniovi.miw.monitora.agent.model.TipoDestino;
 
@@ -43,6 +44,7 @@ public class PersistenceTest {
 	private Destino destino;
 	private Snapshot snapshot;
 	private Date fecha;
+	private Planificacion planificacion;
 
 	@Before
 	public void setUp() {
@@ -221,6 +223,21 @@ public class PersistenceTest {
 		mapper.close();
 	}
 
+	@Test
+	public void testPlanificacion() {
+		logger.debug("testPlanificacion");
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Planificacion plan = mapper.merge(planificacion);
+
+		assertEquals(fecha, plan.getFUltimaModificacion());
+
+		trx.commit();
+		mapper.close();
+	}
+
 	private void persistGraph(List<Object> graph) {
 		logger.debug("persistGraph {}", graph);
 		EntityManager mapper = factory.createEntityManager();
@@ -283,6 +300,9 @@ public class PersistenceTest {
 		snapshot = new Snapshot();
 		snapshot.setFecha(fecha);
 
+		planificacion = new Planificacion();
+		planificacion.setFUltimaModificacion(fecha);
+
 		// link
 
 		informePadre.addSnapshot(snapshot);
@@ -313,6 +333,7 @@ public class PersistenceTest {
 		res.add(tipoDestino);
 		res.add(destino);
 		res.add(snapshot);
+		res.add(planificacion);
 
 		logger.debug("\t -> {}", res);
 		return res;
@@ -329,6 +350,7 @@ public class PersistenceTest {
 		TipoDestino tDes = mapper.merge(tipoDestino);
 		Destino des = mapper.merge(destino);
 		Snapshot snap = mapper.merge(snapshot);
+		Planificacion plan = mapper.merge(planificacion);
 
 		res.add(cl);
 		res.add(ag);
@@ -338,6 +360,7 @@ public class PersistenceTest {
 		res.add(in2);
 		res.add(des);
 		res.add(snap);
+		res.add(plan);
 
 		logger.debug("\t -> {}", res);
 		return res;
