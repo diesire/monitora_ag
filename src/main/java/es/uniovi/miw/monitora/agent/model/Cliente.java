@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /**
  * The persistent class for the CLIENTE database table.
  * 
@@ -17,21 +16,21 @@ public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID_CLIENTE")
+	@Column(name = "ID_CLIENTE")
 	private int idCliente;
 
-	@Column(name="LOGO")
+	@Column(name = "LOGO")
 	private String logo;
 
-	@Column(name="NOMBRE")
+	@Column(name = "NOMBRE")
 	private String nombre;
 
-	//bi-directional many-to-one association to Agente
-	@OneToMany(mappedBy="cliente", orphanRemoval=true)
+	// bi-directional many-to-one association to Agente
+	@OneToMany(mappedBy = "cliente", orphanRemoval = true)
 	private Set<Agente> agentes = new HashSet<Agente>();
 
-	//bi-directional many-to-one association to Destino
-	@OneToMany(mappedBy="cliente")
+	// bi-directional many-to-one association to Destino
+	@OneToMany(mappedBy = "cliente", orphanRemoval = true)
 	private Set<Destino> destinos = new HashSet<Destino>();
 
 	public Cliente() {
@@ -135,7 +134,5 @@ public class Cliente implements Serializable {
 				.append(nombre).append("]");
 		return builder.toString();
 	}
-	
-	
 
 }
