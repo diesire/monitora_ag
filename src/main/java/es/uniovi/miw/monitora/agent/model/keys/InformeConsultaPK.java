@@ -1,6 +1,7 @@
 package es.uniovi.miw.monitora.agent.model.keys;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -33,6 +34,7 @@ public class InformeConsultaPK implements Serializable {
 		this.idInforme = idInforme;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -46,6 +48,7 @@ public class InformeConsultaPK implements Serializable {
 			&& (this.idInforme == castOther.idInforme);
 	}
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
@@ -54,4 +57,13 @@ public class InformeConsultaPK implements Serializable {
 		
 		return hash;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("InformeConsultaPK [idConsulta=").append(idConsulta)
+				.append(", idInforme=").append(idInforme).append("]");
+		return builder.toString();
+	}
+	
+	
 }

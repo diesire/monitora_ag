@@ -1,8 +1,11 @@
 package es.uniovi.miw.monitora.agent.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -54,11 +57,11 @@ public class Consulta implements Serializable {
 			@JoinColumn(name="ID_TIPO_DESTINO")
 			}
 		)
-	private Set<TipoDestino> tipoDestinos;
+	private Set<TipoDestino> tipoDestinos = new HashSet<TipoDestino>();
 
 	//bi-directional many-to-one association to InformeConsulta
 	@OneToMany(mappedBy="consulta")
-	private Set<InformeConsulta> informeConsultas;
+	private Set<InformeConsulta> informeConsultas = new HashSet<InformeConsulta>();
 
 	//bi-directional many-to-one association to Tcon1
 	@OneToMany(mappedBy="consulta")
@@ -146,6 +149,18 @@ public class Consulta implements Serializable {
 	public void setTipoDestinos(Set<TipoDestino> tipoDestinos) {
 		this.tipoDestinos = tipoDestinos;
 	}
+	
+	public TipoDestino addTipoDestino(TipoDestino tipoDestino) {
+		getTipoDestinos().add(tipoDestino);
+		
+		return tipoDestino;
+	}
+	
+	public TipoDestino removeTipoDestino(TipoDestino tipoDestino) {
+		getTipoDestinos().remove(tipoDestino);
+		
+		return tipoDestino;
+	}
 
 	public Set<InformeConsulta> getInformeConsultas() {
 		return this.informeConsultas;
@@ -190,5 +205,43 @@ public class Consulta implements Serializable {
 
 		return tcon1;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + consId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Consulta other = (Consulta) obj;
+		if (consId != other.consId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Consulta [consId=").append(consId)
+				.append(", comandoSo=").append(comandoSo)
+				.append(", descCorta=").append(descCorta)
+				.append(", descLarga=").append(descLarga)
+				.append(", fUltimaModificacion=").append(fUltimaModificacion)
+				.append(", sqlCreate=").append(sqlCreate)
+				.append(", sqlSelect=").append(sqlSelect).append(", tabla=")
+				.append(tabla).append(", tipo=").append(tipo).append("]");
+		return builder.toString();
+	}
+	
+	
 
 }

@@ -27,12 +27,12 @@ public class Cliente implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to Agente
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="cliente", orphanRemoval=true)
 	private Set<Agente> agentes = new HashSet<Agente>();
 
 	//bi-directional many-to-one association to Destino
 	@OneToMany(mappedBy="cliente")
-	private Set<Destino> destinos;
+	private Set<Destino> destinos = new HashSet<Destino>();
 
 	public Cliente() {
 	}
@@ -70,8 +70,8 @@ public class Cliente implements Serializable {
 	}
 
 	public Agente addAgente(Agente agente) {
-		getAgentes().add(agente);
 		agente.setCliente(this);
+		getAgentes().add(agente);
 
 		return agente;
 	}
@@ -99,10 +99,43 @@ public class Cliente implements Serializable {
 	}
 
 	public Destino removeDestino(Destino destino) {
-		getDestinos().remove(destino);
 		destino.setCliente(null);
+		getDestinos().remove(destino);
 
 		return destino;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idCliente;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		if (idCliente != other.idCliente)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Cliente [idCliente=").append(idCliente)
+				.append(", logo=").append(logo).append(", nombre=")
+				.append(nombre).append("]");
+		return builder.toString();
+	}
+	
+	
 
 }

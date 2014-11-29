@@ -1,3 +1,2 @@
 #!/bin/sh
-cd ..
-mvn exec:java -Dexec.mainClass="org.hsqldb.Server" -Dexec.args="database.0 file:./pollo/test"
+java -classpath ~/lib/hsqldb-2.3.2/hsqldb/lib/hsqldb.jar org.hsqldb.Server
