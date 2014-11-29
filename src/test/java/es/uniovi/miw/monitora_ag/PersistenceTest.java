@@ -115,7 +115,10 @@ public class PersistenceTest {
 		trx.begin();
 
 		Consulta co = mapper.merge(consulta);
+		TipoDestino tDes = mapper.merge(tipoDestino);
+		
 		assertEquals("S", co.getTipo());
+		assertTrue(co.getTipoDestinos().contains(tDes));
 
 		trx.commit();
 		mapper.close();
