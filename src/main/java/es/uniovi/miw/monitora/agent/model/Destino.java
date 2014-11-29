@@ -1,6 +1,7 @@
 package es.uniovi.miw.monitora.agent.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,7 +14,6 @@ import javax.persistence.OneToMany;
 
 import es.uniovi.miw.monitora.agent.model.keys.DestinoPK;
 
-
 /**
  * The persistent class for the DESTINO database table.
  * 
@@ -23,27 +23,27 @@ public class Destino implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private DestinoPK id;
+	private DestinoPK id = new DestinoPK();
 
-	@Column(name="ID_TIPO_DESTINO")
+	@Column(name = "ID_TIPO_DESTINO")
 	private int idTipoDestino;
 
-	//bi-directional many-to-many association to Agente
-	@ManyToMany(mappedBy="destinos")
-	private Set<Agente> agentes;
+	// bi-directional many-to-many association to Agente
+	@ManyToMany(mappedBy = "destinos")
+	private Set<Agente> agentes = new HashSet<Agente>();
 
-	//bi-directional many-to-one association to Cliente
+	// bi-directional many-to-one association to Cliente
 	@ManyToOne
-	@JoinColumn(name="ID_CLIENTE", insertable=false, updatable=false)
+	@JoinColumn(name = "ID_CLIENTE", insertable = false, updatable = false)
 	private Cliente cliente;
 
-	//bi-directional many-to-one association to InfPlanDest
-	@OneToMany(mappedBy="destino")
-	private Set<InfPlanDest> infPlanDests;
+	// bi-directional many-to-one association to InfPlanDest
+	@OneToMany(mappedBy = "destino")
+	private Set<InfPlanDest> infPlanDests = new HashSet<InfPlanDest>();
 
-	//bi-directional many-to-one association to Snapshot
-	@OneToMany(mappedBy="destino")
-	private Set<Snapshot> snapshots;
+	// bi-directional many-to-one association to Snapshot
+	@OneToMany(mappedBy = "destino")
+	private Set<Snapshot> snapshots = new HashSet<Snapshot>();
 
 	public Destino() {
 	}
@@ -78,6 +78,7 @@ public class Destino implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+		getId().setIdCliente(cliente.getIdCliente());
 	}
 
 	public Set<InfPlanDest> getInfPlanDests() {
@@ -122,6 +123,39 @@ public class Destino implements Serializable {
 		snapshot.setDestino(null);
 
 		return snapshot;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Destino other = (Destino) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Destino [id=").append(id).append(", idTipoDestino=")
+				.append(idTipoDestino).append("]");
+		return builder.toString();
 	}
 
 }

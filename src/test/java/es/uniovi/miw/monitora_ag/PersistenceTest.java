@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import es.uniovi.miw.monitora.agent.model.Agente;
 import es.uniovi.miw.monitora.agent.model.Cliente;
 import es.uniovi.miw.monitora.agent.model.Consulta;
+import es.uniovi.miw.monitora.agent.model.Destino;
 import es.uniovi.miw.monitora.agent.model.Informe;
 import es.uniovi.miw.monitora.agent.model.InformeConsulta;
 import es.uniovi.miw.monitora.agent.model.InformeTipoDestino;
@@ -39,6 +40,7 @@ public class PersistenceTest {
 	private InformeConsulta informeConsulta;
 	private TipoDestino tipoDestino;
 	private InformeTipoDestino informeTipoDestino;
+	private Destino destino;
 
 	@Before
 	public void setUp() {
@@ -168,6 +170,23 @@ public class PersistenceTest {
 		mapper.close();
 	}
 
+	@Test
+	public void testDestino() {
+		logger.debug("testDestino");
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Destino des = (Destino) mapper.merge(destino);
+		Cliente cli = (Cliente) mapper.merge(cliente);
+
+		assertEquals(cli, des.getCliente());
+		assertEquals(cli.getIdCliente(), des.getId().getIdCliente());
+
+		trx.commit();
+		mapper.close();
+	}
+
 	private void persistGraph(List<Object> graph) {
 		logger.debug("persistGraph {}", graph);
 		EntityManager mapper = factory.createEntityManager();
@@ -225,8 +244,12 @@ public class PersistenceTest {
 		agente = new Agente();
 		agente.setComentarios("Comentarios");
 
+		destino = new Destino();
+
 		// link
 		cliente.addAgente(agente);
+
+		cliente.addDestino(destino);
 
 		informePadre.addInformeConsulta(informeConsulta);
 		consulta.addInformeConsulta(informeConsulta);
@@ -245,7 +268,7 @@ public class PersistenceTest {
 		res.add(informePadre);
 		res.add(consulta);
 		res.add(tipoDestino);
-		
+		res.add(destino);
 
 		logger.debug("\t -> {}", res);
 		return res;
@@ -260,6 +283,7 @@ public class PersistenceTest {
 		Informe in2 = mapper.merge(informeHijo);
 		Consulta cons = mapper.merge(consulta);
 		TipoDestino tDes = mapper.merge(tipoDestino);
+		Destino des = mapper.merge(destino);
 
 		res.add(cl);
 		res.add(ag);
@@ -267,6 +291,7 @@ public class PersistenceTest {
 		res.add(cons);
 		res.add(tDes);
 		res.add(in2);
+		res.add(des);
 
 		logger.debug("\t -> {}", res);
 		return res;

@@ -1,6 +1,7 @@
 package es.uniovi.miw.monitora.agent.model.keys;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -56,4 +57,13 @@ public class DestinoPK implements Serializable {
 		
 		return hash;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("DestinoPK [idCliente=").append(idCliente)
+				.append(", idDestino=").append(idDestino).append("]");
+		return builder.toString();
+	}
+	
+	
 }
