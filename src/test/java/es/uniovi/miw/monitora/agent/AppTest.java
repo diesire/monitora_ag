@@ -31,13 +31,17 @@ public class AppTest {
 
 			app.help();
 			assertTrue(true);
+			System.out.println("help");
 
 			app.exit();
 			assertTrue(true);
+			System.out.println("exit");
 		} catch (InterruptedException e) {
 			fail();
 		}
-
+		
+		System.out.println("out");
+		app = null;
 		throw new Exception("Exit can´t call System.exit()");
 	}
 }

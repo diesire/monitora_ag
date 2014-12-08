@@ -120,6 +120,10 @@ public class App {
 		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
 		System.out.println("Peak Thread Count = " + bean.getPeakThreadCount());
 	}
+
+	public void test() {
+		monitoraAg.test();
+	}
 }
 
 class InteractiveThread extends Thread {
@@ -168,6 +172,10 @@ class InteractiveThread extends Thread {
 		case "start":
 			logger.debug("command start");
 			app.start();
+			break;
+		case "test":
+			logger.debug("command test");
+			app.test();
 			break;
 		default:
 			break;
