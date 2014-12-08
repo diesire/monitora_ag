@@ -27,7 +27,7 @@ import es.uniovi.miw.monitora.core.api.Task;
 /**
  * Unit test for simple App.
  */
-public class AppTest {
+public class ComponentsTest {
 	static Logger logger = LoggerFactory.getLogger(App.class);
 
 	@Test
