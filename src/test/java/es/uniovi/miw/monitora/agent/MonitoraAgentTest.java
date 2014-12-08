@@ -19,6 +19,7 @@ public class MonitoraAgentTest {
 
 	@After
 	public void tearDown() throws Exception {
+		ag = null;
 	}
 
 	@Test
@@ -26,6 +27,8 @@ public class MonitoraAgentTest {
 		ag = new MonitoraAgent();
 		assertEquals(Status.CREATED, ag.getStatus());
 		ag.start();
+		assertEquals(Status.RUNNING, ag.getStatus());
+		ag.test();
 		assertEquals(Status.RUNNING, ag.getStatus());
 		ag.stop();
 		assertEquals(Status.STOPPED, ag.getStatus());

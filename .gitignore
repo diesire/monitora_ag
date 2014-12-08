@@ -15,3 +15,5 @@ data/test.lobs
 data/mydb.properties
 
 data/mydb.log
+
+data/mydb.lobs

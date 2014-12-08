@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import es.uniovi.miw.monitora.agent.App;
-import es.uniovi.miw.monitora.agent.Status;
 
 public class AppTest {
 
@@ -20,6 +19,7 @@ public class AppTest {
 
 	@After
 	public void tearDown() throws Exception {
+		app = null;
 	}
 
 	@Test(expected = Exception.class)
@@ -31,17 +31,15 @@ public class AppTest {
 
 			app.help();
 			assertTrue(true);
-			System.out.println("help");
+
+			app.test();
+			assertTrue(true);
 
 			app.exit();
 			assertTrue(true);
-			System.out.println("exit");
 		} catch (InterruptedException e) {
 			fail();
 		}
-		
-		System.out.println("out");
-		app = null;
 		throw new Exception("Exit can´t call System.exit()");
 	}
 }
