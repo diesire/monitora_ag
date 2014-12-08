@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora_ag;
+package es.uniovi.miw.monitora.agent;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 import es.uniovi.miw.monitora.agent.MonitoraAgent;
 import es.uniovi.miw.monitora.agent.Status;
 
-public class MonitoraAgTest {
+public class MonitoraAgentTest {
 
 	private MonitoraAgent ag;
 

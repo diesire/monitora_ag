@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora_ag;
+package es.uniovi.miw.monitora.agent;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -64,12 +64,13 @@ public class ComponentsTest {
 			fail();
 		}
 	}
-	
+
 	@Test
 	public void testSnapshot() {
 		SnapshotManager snapshotManager = new SnapshotManager(getTasks());
 		QuartzTaskManager taskManager = new QuartzTaskManager();
-		SnapshotJobListener snapshotJobListener = new SnapshotJobListener("snapshot", snapshotManager);
+		SnapshotJobListener snapshotJobListener = new SnapshotJobListener(
+				"snapshot", snapshotManager);
 		taskManager.start();
 		taskManager.add(snapshotManager.getTasks());
 		taskManager.setJobListener(snapshotJobListener);
