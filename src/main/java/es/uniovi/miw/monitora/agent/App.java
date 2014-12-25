@@ -7,21 +7,11 @@ import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.management.ThreadMXBean;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Arrays;
-
-import javax.persistence.criteria.CriteriaBuilder.Case;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
-
-import es.uniovi.miw.monitora.agent.task.TaskManager;
-import es.uniovi.miw.monitora.agent.task.quartz.QuartzTaskManager;
 
 public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);
@@ -120,6 +110,10 @@ public class App {
 		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
 		System.out.println("Peak Thread Count = " + bean.getPeakThreadCount());
 	}
+
+	public void test() {
+		monitoraAg.test();
+	}
 }
 
 class InteractiveThread extends Thread {
@@ -168,6 +162,10 @@ class InteractiveThread extends Thread {
 		case "start":
 			logger.debug("command start");
 			app.start();
+			break;
+		case "test":
+			logger.debug("command test");
+			app.test();
 			break;
 		default:
 			break;

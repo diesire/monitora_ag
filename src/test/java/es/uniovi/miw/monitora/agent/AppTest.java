@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora_ag;
+package es.uniovi.miw.monitora.agent;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import es.uniovi.miw.monitora.agent.App;
-import es.uniovi.miw.monitora.agent.Status;
 
 public class AppTest {
 
@@ -20,6 +19,7 @@ public class AppTest {
 
 	@After
 	public void tearDown() throws Exception {
+		app = null;
 	}
 
 	@Test(expected = Exception.class)
@@ -32,12 +32,14 @@ public class AppTest {
 			app.help();
 			assertTrue(true);
 
+			app.test();
+			assertTrue(true);
+
 			app.exit();
 			assertTrue(true);
 		} catch (InterruptedException e) {
 			fail();
 		}
-
 		throw new Exception("Exit can´t call System.exit()");
 	}
 }

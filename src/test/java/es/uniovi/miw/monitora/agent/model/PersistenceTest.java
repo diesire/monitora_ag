@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora_ag;
+package es.uniovi.miw.monitora.agent.model;
 
 import static org.junit.Assert.*;
 
@@ -12,11 +12,14 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.uniovi.miw.monitora.agent.MonitoraAgent;
 import es.uniovi.miw.monitora.agent.model.Agente;
 import es.uniovi.miw.monitora.agent.model.Cliente;
 import es.uniovi.miw.monitora.agent.model.Consulta;
@@ -50,6 +53,14 @@ public class PersistenceTest {
 	private LineaCron linea1;
 	private LineaCron linea2;
 	private InfPlanDest infoPlanDest;
+	private static MonitoraAgent monitoraAgent;
+
+	@BeforeClass
+	static public void setUpClass() {
+		logger.debug("setUpClass");
+		monitoraAgent = new MonitoraAgent();
+		monitoraAgent.start();
+	}
 
 	@Before
 	public void setUp() {
@@ -64,6 +75,13 @@ public class PersistenceTest {
 		logger.debug("tearDown");
 		removeGraph();
 		factory.close();
+	}
+
+	@AfterClass
+	static public void tearDownClass() {
+		logger.debug("tearDownClass");
+		monitoraAgent.exit();
+		monitoraAgent = null;
 	}
 
 	@Test

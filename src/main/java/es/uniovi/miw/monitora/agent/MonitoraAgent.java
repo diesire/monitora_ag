@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora.agent;
+	package es.uniovi.miw.monitora.agent;
 
 import java.sql.Connection;
 
@@ -38,11 +38,23 @@ public class MonitoraAgent {
 		if (getStatus() == Status.RUNNING) {
 			setStatus(Status.STOPPED);
 			mainThread.termitate();
-			try {
-				mainThread.join();
-			} catch (InterruptedException e) {
-				logger.error("mainThread Interrupted exception", e);
-			}
+//			try {
+//				mainThread.join();
+//			} catch (InterruptedException e) {
+//				logger.error("mainThread Interrupted exception", e);
+//			}
+		}
+	}
+
+	public void test() {
+		try {
+			EntityManagerFactory emf = Persistence
+					.createEntityManagerFactory("monitora_ag");
+
+			emf.close();
+			logger.debug("Si no hay excepciones todo va bien o no hay ninguna clase mapeada)");
+		} catch (Exception e) {
+			logger.error("Error creando el contexto de persistencia", e);
 		}
 	}
 
@@ -60,7 +72,7 @@ class MainThread extends Thread {
 	public Logger logger = LoggerFactory.getLogger(InteractiveThread.class);
 	private DBManager dbm;
 	// private TaskManager tm;
-	boolean running;
+	private boolean running;
 
 	public MainThread() {
 		super("Main Thread");
@@ -78,14 +90,16 @@ class MainThread extends Thread {
 		logger.debug("running...");
 		startServers();
 
-		testHibernate();
-
 		Connection conn = dbm.getDBConn();
-
 		running = true;
 
+		if (conn == null) {
+			logger.error("Connection refused");
+			running = false;
+		}
+
 		while (running) {
-			duStuff();
+			doStuff();
 			try {
 				Thread.currentThread();
 				Thread.sleep(1000);
@@ -99,17 +113,7 @@ class MainThread extends Thread {
 		closeServers();
 	}
 
-	private void testHibernate() {
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("monitora_ag");
-
-		emf.close();
-
-		logger.debug("--> Si no hay excepciones todo va bien");
-		logger.debug("\n\t (O no hay ninguna clase mapeada)");
-	}
-
-	private void duStuff() {
+	private void doStuff() {
 		System.out.print(".");
 		try {
 			//
