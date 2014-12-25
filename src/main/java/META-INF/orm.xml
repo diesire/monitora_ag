@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+	<persistence-unit-metadata>
+		<persistence-unit-defaults>
+			<access>FIELD</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<named-query name="Tcon1.findAll">
+		<query>SELECT t FROM Tcon1 t</query>
+	</named-query>
+	<named-query name="LogError.findAll">
+		<query>SELECT l FROM LogError l</query>
+	</named-query>
+	<named-query name="InformeConsulta.findAll">
+		<query>SELECT i FROM InformeConsulta i</query>
+	</named-query>
+	<named-query name="Snapshot.findAll">
+		<query>SELECT s FROM Snapshot s</query>
+	</named-query>
+	<named-query name="InformeTipoDestino.findAll">
+		<query>SELECT i FROM InformeTipoDestino i</query>
+	</named-query>
+	<named-query name="Destino.findAll">
+		<query>SELECT d FROM Destino d</query>
+	</named-query>
+	<named-query name="InfPlanDestBorrado.findAll">
+		<query>SELECT i FROM InfPlanDestBorrado i</query>
+	</named-query>
+	<named-query name="Informe.findAll">
+		<query>SELECT i FROM Informe i</query>
+	</named-query>
+	<named-query name="Cliente.findAll">
+		<query>SELECT c FROM Cliente c</query>
+	</named-query>
+	<named-query name="InfPlanDest.findAll">
+		<query>SELECT i FROM InfPlanDest i</query>
+	</named-query>
+	<named-query name="LineaCron.findAll">
+		<query>SELECT l FROM LineaCron l</query>
+	</named-query>
+	<named-query name="Consulta.findAll">
+		<query>SELECT c FROM Consulta c</query>
+	</named-query>
+	<named-query name="TipoDestino.findAll">
+		<query>SELECT t FROM TipoDestino t</query>
+	</named-query>
+	<named-query name="Agente.findAll">
+		<query>SELECT a FROM Agente a</query>
+	</named-query>
+	<named-query name="Planificacion.findAll">
+		<query>SELECT p FROM Planificacion p</query>
+	</named-query>
+</entity-mappings>
