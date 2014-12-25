@@ -117,6 +117,7 @@ class MainThread extends Thread {
 		System.out.print(".");
 		try {
 			//
+			//
 			// // Some examples
 			// Statement stmt = conn.createStatement();
 			// stmt.executeQuery("CREATE TABLE IF NOT EXISTS answers (num INT IDENTITY, answer VARCHAR(250))");

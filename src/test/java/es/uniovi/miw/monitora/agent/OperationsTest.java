@@ -38,7 +38,7 @@ import es.uniovi.miw.monitora.core.task.SchedulerType;
 /**
  * Unit test for simple App.
  */
-public class ComponentsTest {
+public class OperationsTest {
 	static Logger logger = LoggerFactory.getLogger(App.class);
 	ArrayList<Task> serverTasks;
 	private String clientId;
