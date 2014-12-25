@@ -1,10 +1,11 @@
-	package es.uniovi.miw.monitora.agent;
+package es.uniovi.miw.monitora.agent;
 
 import java.sql.Connection;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.hibernate.annotations.Check;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +22,8 @@ public class MonitoraAgent {
 
 	public void start() {
 		logger.debug("start");
-		setStatus(Status.RUNNING);
 		mainThread.start();
+		setStatus(Status.RUNNING);
 	}
 
 	public Status getStatus() {
@@ -38,11 +39,11 @@ public class MonitoraAgent {
 		if (getStatus() == Status.RUNNING) {
 			setStatus(Status.STOPPED);
 			mainThread.termitate();
-//			try {
-//				mainThread.join();
-//			} catch (InterruptedException e) {
-//				logger.error("mainThread Interrupted exception", e);
-//			}
+			// try {
+			// mainThread.join();
+			// } catch (InterruptedException e) {
+			// logger.error("mainThread Interrupted exception", e);
+			// }
 		}
 	}
 
@@ -77,6 +78,7 @@ class MainThread extends Thread {
 	public MainThread() {
 		super("Main Thread");
 		dbm = new DBManager();
+		assert dbm.getStatus() == Status.CREATED;
 		// tm = new QuartzTaskManager();
 	}
 
@@ -91,11 +93,14 @@ class MainThread extends Thread {
 		startServers();
 
 		Connection conn = dbm.getDBConn();
-		running = true;
 
 		if (conn == null) {
+
 			logger.error("Connection refused");
 			running = false;
+		} else {
+
+			running = true;
 		}
 
 		while (running) {
@@ -136,6 +141,7 @@ class MainThread extends Thread {
 	private void startServers() {
 		logger.debug("starting servers...");
 		dbm.startDBServer();
+		assert dbm.getStatus() == Status.RUNNING;
 		// tm.start();
 	}
 
@@ -143,5 +149,8 @@ class MainThread extends Thread {
 		logger.debug("clossing servers...");
 		// tm.stop();
 		dbm.stopDBServer();
+		assert dbm.getStatus() == Status.STOPPED;
+		dbm.closeDBServer();
+		assert dbm.getStatus() == Status.TERMINATED;
 	}
 }

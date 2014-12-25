@@ -9,41 +9,74 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DBManager {
-	Logger logger = LoggerFactory.getLogger(DBManager.class);
 
-	final String dbLocation = "data/"; // change it to your db location
-	Server server;
-	Connection dbConn = null;
+	private Logger logger = LoggerFactory.getLogger(DBManager.class);
+	// TODO: change it to your db location
+	private final String dbLocation = "data/";
+	private Server server;
+	private Connection dbConn = null;
+	private Status status = Status.CREATED;
 
 	public void startDBServer() {
+
 		logger.debug("startDBServer");
 
 		HsqlProperties props = new HsqlProperties();
 		props.setProperty("server.database.0", "file:" + dbLocation + "mydb;");
 		props.setProperty("server.dbname.0", "monitoraag");
 		server = new org.hsqldb.Server();
+
 		try {
+
 			server.setProperties(props);
+			server.start();
+			setStatus(Status.RUNNING);
 		} catch (Exception e) {
-			return;
+
+			logger.error("Error starting DB server", e);
 		}
-		server.start();
 	}
 
 	public void stopDBServer() {
+
 		logger.debug("stopDBServer");
 		server.stop();
-		server.shutdown();
+		setStatus(Status.STOPPED);
 	}
 
 	public Connection getDBConn() {
+
 		try {
+
 			Class.forName("org.hsqldb.jdbcDriver");
 			dbConn = DriverManager.getConnection(
 					"jdbc:hsqldb:hsql://localhost/monitoraag", "SA", "");
 		} catch (Exception e) {
-			e.printStackTrace();
+
+			logger.error("Error getting DB connection", e);
 		}
+
 		return dbConn;
+	}
+
+	public Status getStatus() {
+
+		return status;
+	}
+
+	protected void setStatus(Status status) {
+
+		this.status = status;
+	}
+
+	public void closeDBServer() {
+
+		if (getStatus() == Status.RUNNING) {
+
+			stopDBServer();
+		}
+
+		server.shutdown();
+		setStatus(Status.TERMINATED);
 	}
 }

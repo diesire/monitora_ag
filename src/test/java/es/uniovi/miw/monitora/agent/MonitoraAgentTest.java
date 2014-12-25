@@ -28,20 +28,14 @@ public class MonitoraAgentTest {
 	@Test
 	public void testGetStatus() {
 		ag = new MonitoraAgent();
-		logger.debug("monitoraAgent created");
 		assertEquals(Status.CREATED, ag.getStatus());
 		ag.start();
-		logger.debug("monitoraAgent running");
 		assertEquals(Status.RUNNING, ag.getStatus());
 		ag.test();
-		logger.debug("monitoraAgent test");
 		assertEquals(Status.RUNNING, ag.getStatus());
 		ag.stop();
-		logger.debug("monitoraAgent stopped");
 		assertEquals(Status.STOPPED, ag.getStatus());
 		ag.exit();
-		logger.debug("monitoraAgent terminated");
 		assertEquals(Status.TERMINATED, ag.getStatus());
 	}
-
 }
