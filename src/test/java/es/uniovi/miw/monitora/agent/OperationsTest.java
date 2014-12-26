@@ -40,109 +40,101 @@ import es.uniovi.miw.monitora.core.task.SchedulerType;
  * Unit test for simple App.
  */
 public class OperationsTest {
+	private static final Calendar NOW = Calendar.getInstance();
+	private static final String TEST_CLIENT = "AppTestClient";
+
 	static Logger logger = LoggerFactory.getLogger(App.class);
-	ArrayList<Task> serverTasks;
-	private String clientId;
+	private MonitoraClient mockedClient;
 
 	@Before
 	public void setUp() throws Exception {
-		clientId = "AppTestClient";
-		serverTasks = new ArrayList<Task>();
-		serverTasks.add(createTask(clientId, new Command(CommandType.SHELL,
-				"ls", "-la"), TaskResult.STDOUT, SchedulerType.CRON,
-				"1 * * * * ?"));
-		serverTasks.add(createTask(clientId, new Command(CommandType.SHELL,
-				"touch", "deleteme"), TaskResult.STDOUT, SchedulerType.CRON,
-				"1 * * * * ?"));
-		serverTasks.add(createTask(clientId, new Command(CommandType.QUERY,
-				"select * from system"), TaskResult.STDOUT, SchedulerType.CRON,
-				"1 * * * * ?"));
-	}
+		ArrayList<Task> expectedTasks = new ArrayList<Task>();
+		Ack expectedAck = new Ack();
 
-	@After
-	public void tearDown() throws Exception {
+		expectedTasks.add(createTask(TEST_CLIENT, new Command(
+				CommandType.SHELL, "ls", "-la"), TaskResult.STDOUT,
+				SchedulerType.CRON, "1 * * * * ?"));
+		expectedTasks.add(createTask(TEST_CLIENT, new Command(
+				CommandType.SHELL, "touch", "deleteme"), TaskResult.STDOUT,
+				SchedulerType.CRON, "1 * * * * ?"));
+		expectedTasks.add(createTask(TEST_CLIENT, new Command(
+				CommandType.QUERY, "select * from system"), TaskResult.STDOUT,
+				SchedulerType.CRON, "1 * * * * ?"));
+
+		expectedAck.setUpdate(NOW);
+
+		mockedClient = mock(new MonitoraClient(TEST_CLIENT).getClass());
+		when(mockedClient.tasks()).thenReturn(expectedTasks);
+		when(mockedClient.ping()).thenReturn(expectedAck);
 	}
 
 	@Test
 	public void testPing() {
-		Ack expectedAck = new Ack();
-		expectedAck.setUpdate(Calendar.getInstance());
-
-		MonitoraClient mockedClient = mock(new MonitoraClient(clientId)
-				.getClass());
-		when(mockedClient.ping()).thenReturn(expectedAck);
-
 		Ack ack = mockedClient.ping();
 
 		assertNotNull(ack.getUpdate().getTime());
-		assertEquals(expectedAck, ack);
+		assertEquals(NOW, ack.getUpdate());
 	}
 
 	@Test
 	public void testRawTasks() {
-		List<Task> tasks = getTasks();
+		List<Task> tasks = mockedClient.tasks();
 		assertEquals(3, tasks.size());
 	}
 
 	@Test
 	public void testQuartz() {
+
 		TaskManager taskManager = new QuartzTaskManager();
+
 		taskManager.start();
-		taskManager.add(getTasks());
+		taskManager.add(mockedClient.tasks());
 		try {
+
 			Thread.sleep(2000);
 			assertEquals(3, taskManager.size());
 			taskManager.stop();
 		} catch (InterruptedException e) {
+
 			fail();
 		}
 	}
 
 	@Test
 	public void testSnapshot() {
-		SnapshotManager snapshotManager = new SnapshotManager(getTasks());
+
+		SnapshotManager snapshotManager = new SnapshotManager(
+				mockedClient.tasks());
 		QuartzTaskManager taskManager = new QuartzTaskManager();
 		SnapshotJobListener snapshotJobListener = new SnapshotJobListener(
 				"snapshot", snapshotManager);
+
 		taskManager.start();
 		taskManager.add(snapshotManager.getTasks());
 		taskManager.setJobListener(snapshotJobListener);
 		try {
+
 			Thread.sleep(10000);
 			assertEquals(3, taskManager.size());
 			taskManager.stop();
 		} catch (InterruptedException e) {
+
 			fail();
 		}
+
 		assertEquals(3, snapshotManager.getSnapshot().tasks.size());
 		assertNotNull(snapshotManager.getSnapshot().results.size());
 	}
 
-	private List<Task> getTasks() {
-		Client restClient = ClientBuilder.newClient();
-		WebTarget target = restClient
-				.target("http://localhost:8080/monitora_sv/rest/");
-		String clientId = "AppTestClient";
-		WebTarget resourceTarget = target.path("c2/tasks/" + clientId);
-
-		Builder mockedBuilder = mock(resourceTarget.request()
-				.header("Content-Type", MediaType.APPLICATION_JSON).getClass());
-
-		when(mockedBuilder.get(new GenericType<List<Task>>() {
-		})).thenReturn(serverTasks);
-
-		return mockedBuilder.get(new GenericType<List<Task>>() {
-		});
-	}
-
 	private Task createTask(String clientId, Command command,
 			String resultType, String scheduler, String schedulerArgs) {
+		
 		Task task = new Task();
 		task.setCommand(command);
 		task.setScheduler(scheduler);
 		task.setSchedulerArgs(schedulerArgs);
 		task.setId(clientId + System.nanoTime());
-		task.setCreationDate(Calendar.getInstance());
+		task.setCreationDate(NOW);
 		task.setResultType(resultType);
 		logger.debug("created new {}", task);
 		return task;
