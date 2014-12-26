@@ -121,8 +121,13 @@ class MainThread extends Thread {
 	private void doStuff() {
 		System.out.print(".");
 		try {
-			//
-			//
+			// Ping Home
+			// Get updates
+			// Store data
+			// Run scheduler
+			// * Query, store, save, send
+			
+			
 			// // Some examples
 			// Statement stmt = conn.createStatement();
 			// stmt.executeQuery("CREATE TABLE IF NOT EXISTS answers (num INT IDENTITY, answer VARCHAR(250))");

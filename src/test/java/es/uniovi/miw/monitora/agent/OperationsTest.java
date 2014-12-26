@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.uniovi.miw.monitora.agent.client.MonitoraClient;
 import es.uniovi.miw.monitora.agent.snapshot.SnapshotManager;
 import es.uniovi.miw.monitora.agent.task.TaskManager;
 import es.uniovi.miw.monitora.agent.task.quartz.QuartzTaskManager;
@@ -64,21 +65,17 @@ public class OperationsTest {
 
 	@Test
 	public void testPing() {
-		Client restClient = ClientBuilder.newClient();
-		WebTarget target = restClient
-				.target("http://localhost:8080/monitora_sv/rest/");
-		WebTarget resourceTarget = target.path("c2/ping/" + clientId);
+		Ack expectedAck = new Ack();
+		expectedAck.setUpdate(Calendar.getInstance());
 
-		Builder mockedBuilder = mock(resourceTarget.request()
-				.header("Content-Type", MediaType.APPLICATION_JSON).getClass());
-		Ack ackServer = new Ack();
-		ackServer.setUpdate(Calendar.getInstance());
-		when(mockedBuilder.get(Ack.class)).thenReturn(ackServer);
+		MonitoraClient mockedClient = mock(new MonitoraClient(clientId)
+				.getClass());
+		when(mockedClient.ping()).thenReturn(expectedAck);
 
-		Ack ack = mockedBuilder.get(Ack.class);
+		Ack ack = mockedClient.ping();
 
 		assertNotNull(ack.getUpdate().getTime());
-		assertEquals(ackServer, ack);
+		assertEquals(expectedAck, ack);
 	}
 
 	@Test
