@@ -5,11 +5,15 @@ import java.sql.Connection;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.hibernate.annotations.Check;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.uniovi.miw.monitora.agent.client.MonitoraClient;
+import es.uniovi.miw.monitora.agent.model.Agente;
+
 public class MonitoraAgent {
+	public static final String CLIENT_ID = "CLIENT001";
+
 	private static Logger logger = LoggerFactory.getLogger(MonitoraAgent.class);
 
 	private Status status = Status.CREATED;
@@ -74,11 +78,13 @@ class MainThread extends Thread {
 	private DBManager dbm;
 	// private TaskManager tm;
 	private boolean running;
+	private MonitoraClient monitoraClient;
 
 	public MainThread() {
 		super("Main Thread");
 		dbm = new DBManager();
 		assert dbm.getStatus() == Status.CREATED;
+		monitoraClient = new MonitoraClient(MonitoraAgent.CLIENT_ID);
 		// tm = new QuartzTaskManager();
 	}
 
@@ -101,46 +107,33 @@ class MainThread extends Thread {
 		} else {
 
 			running = true;
+			try {
+
+				monitoraClient.ping();
+				Agente agente = monitoraClient.agente();
+
+				// meter el informe en persistencia
+				// actualizar TaskManager
+				// run taskManager
+
+			} catch (Exception e) {
+				logger.error("Error in MonitoraClient", e);
+			}
 		}
 
 		while (running) {
-			doStuff();
+			logger.debug("main thread running...");
 			try {
 				Thread.currentThread();
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException ie) {
 				logger.debug("main thread interrupted exception", ie);
 				running = false;
 			}
 		}
 
-		logger.debug("clossig...");
+		logger.debug("closig...");
 		closeServers();
-	}
-
-	private void doStuff() {
-		System.out.print(".");
-		try {
-			// Ping Home
-			// Get updates
-			// Store data
-			// Run scheduler
-			// * Query, store, save, send
-			
-			
-			// // Some examples
-			// Statement stmt = conn.createStatement();
-			// stmt.executeQuery("CREATE TABLE IF NOT EXISTS answers (num INT IDENTITY, answer VARCHAR(250))");
-			// stmt.executeQuery("INSERT INTO answers (answer) values ('this is a new answer')");
-			// ResultSet rs =
-			// stmt.executeQuery("SELECT num, answer FROM answers");
-			// while (rs.next()) {
-			// System.out.println("Answer number: " + rs.getString("num")
-			// + "; answer text: " + rs.getString("answer"));
-			// }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void startServers() {
@@ -151,7 +144,7 @@ class MainThread extends Thread {
 	}
 
 	private void closeServers() {
-		logger.debug("clossing servers...");
+		logger.debug("closing servers...");
 		// tm.stop();
 		dbm.stopDBServer();
 		assert dbm.getStatus() == Status.STOPPED;

@@ -1,42 +1,54 @@
 package es.uniovi.miw.monitora.agent.client;
 
-import java.util.List;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
+import es.uniovi.miw.monitora.agent.model.Agente;
 import es.uniovi.miw.monitora.core.api.Ack;
-import es.uniovi.miw.monitora.core.api.Task;
 
 public class MonitoraClient {
 
-	private String clientId;
+	private String agenteId;
 	private WebTarget target;
 
-	public MonitoraClient(String clientId) {
-		this.clientId = clientId;
+	public MonitoraClient(String agenteId) {
+		
+		this.agenteId = agenteId;
 		Client restClient = ClientBuilder.newClient();
 		target = restClient.target("http://localhost:8080/monitora_sv/rest/");
 	}
 
-	public Ack ping() {
+	public Ack ping() throws Exception {
 
-		Ack ack = target.path("c2/ping/" + clientId).request()
-				.header("Content-Type", MediaType.APPLICATION_JSON)
-				.get(Ack.class);
+		try {
 
-		return ack;
+			Ack ack = target.path("c2/ping/" + agenteId).request()
+					.header("Content-Type", MediaType.APPLICATION_JSON)
+					.get(Ack.class);
+
+			return ack;
+		} catch (Exception e) {
+
+			// XXX handle ConnectException
+			throw new Exception(e);
+		}
 	}
+	
+	public Agente agente() throws Exception {
 
-	public List<Task> tasks() {
-		List<Task> tasks = target.path("c2/tasks/" + clientId).request()
-				.header("Content-Type", MediaType.APPLICATION_JSON)
-				.get(new GenericType<List<Task>>() {
-				});
+		try {
 
-		return tasks;
+			Agente agent = target.path("c2/agent/" + agenteId).request()
+					.header("Content-Type", MediaType.APPLICATION_JSON)
+					.get(Agente.class);
+
+			return agent;
+		} catch (Exception e) {
+
+			// XXX handle ConnectException
+			throw new Exception(e);
+		}
 	}
 }
