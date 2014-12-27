@@ -79,6 +79,7 @@ public class OperationsTest {
 	@Test
 	public void testRawTasks() {
 		List<Task> tasks = mockedClient.tasks();
+		
 		assertEquals(3, tasks.size());
 	}
 
