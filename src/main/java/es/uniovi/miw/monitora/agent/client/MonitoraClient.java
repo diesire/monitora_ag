@@ -10,11 +10,11 @@ import es.uniovi.miw.monitora.core.api.Ack;
 
 public class MonitoraClient {
 
-	private String agenteId;
+	private int agenteId;
 	private WebTarget target;
 
-	public MonitoraClient(String agenteId) {
-		
+	public MonitoraClient(int agenteId) {
+
 		this.agenteId = agenteId;
 		Client restClient = ClientBuilder.newClient();
 		target = restClient.target("http://localhost:8080/monitora_sv/rest/");
@@ -35,7 +35,7 @@ public class MonitoraClient {
 			throw new Exception(e);
 		}
 	}
-	
+
 	public Agente agente() throws Exception {
 
 		try {

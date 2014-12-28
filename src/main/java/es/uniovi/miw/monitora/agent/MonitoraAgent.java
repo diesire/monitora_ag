@@ -12,7 +12,7 @@ import es.uniovi.miw.monitora.agent.client.MonitoraClient;
 import es.uniovi.miw.monitora.agent.model.Agente;
 
 public class MonitoraAgent {
-	public static final String CLIENT_ID = "CLIENT001";
+	public static final int CLIENT_ID = 1; //TODO: get from config file
 
 	private static Logger logger = LoggerFactory.getLogger(MonitoraAgent.class);
 
