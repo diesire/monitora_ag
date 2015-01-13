@@ -4,11 +4,18 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import es.uniovi.miw.monitora.agent.model.Agente;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import es.uniovi.miw.monitora.core.api.Ack;
+import es.uniovi.miw.monitora.server.model.Agente;
 
 public class MonitoraClient {
+
+	static private Logger logger = LoggerFactory
+			.getLogger(MonitoraClient.class);
 
 	private int agenteId;
 	private WebTarget target;
@@ -38,17 +45,39 @@ public class MonitoraClient {
 
 	public Agente agente() throws Exception {
 
+		// try {
+		//
+		// Agente agent = target.path("c2/agente/" + agenteId).request()
+		// .header("Content-Type", MediaType.APPLICATION_JSON)
+		// .get(Agente.class);
+		//
+		// return agent;
+		// } catch (Exception e) {
+		//
+		// // XXX handle ConnectException
+		// throw new Exception(e);
+		// }
+
+		logger.trace("Agente[{}]", agenteId);
+		Response response = target.path("c2/agente/" + agenteId)
+				.request(MediaType.APPLICATION_JSON_TYPE).get();
+
 		try {
-
-			Agente agent = target.path("c2/agent/" + agenteId).request()
-					.header("Content-Type", MediaType.APPLICATION_JSON)
-					.get(Agente.class);
-
-			return agent;
+			Agente agente = response.readEntity(Agente.class);
+			return agente;
 		} catch (Exception e) {
+			logger.error("Error deserializating object", e);
+		}
+		return null;
+	}
 
-			// XXX handle ConnectException
-			throw new Exception(e);
+	public static void main(String[] args) {
+		try {
+			Ack ack = new MonitoraClient(-1).ping();
+			Agente agente = new MonitoraClient(-1).agente();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

@@ -20,18 +20,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.agent.MonitoraAgent;
-import es.uniovi.miw.monitora.agent.model.Agente;
-import es.uniovi.miw.monitora.agent.model.Cliente;
-import es.uniovi.miw.monitora.agent.model.Consulta;
-import es.uniovi.miw.monitora.agent.model.Destino;
-import es.uniovi.miw.monitora.agent.model.InfPlanDest;
-import es.uniovi.miw.monitora.agent.model.Informe;
-import es.uniovi.miw.monitora.agent.model.InformeConsulta;
-import es.uniovi.miw.monitora.agent.model.InformeTipoDestino;
-import es.uniovi.miw.monitora.agent.model.LineaCron;
-import es.uniovi.miw.monitora.agent.model.Planificacion;
-import es.uniovi.miw.monitora.agent.model.Snapshot;
-import es.uniovi.miw.monitora.agent.model.TipoDestino;
+import es.uniovi.miw.monitora.server.model.Agente;
+import es.uniovi.miw.monitora.server.model.Cliente;
+import es.uniovi.miw.monitora.server.model.Consulta;
+import es.uniovi.miw.monitora.server.model.Destino;
+import es.uniovi.miw.monitora.server.model.InfPlanDest;
+import es.uniovi.miw.monitora.server.model.Informe;
+import es.uniovi.miw.monitora.server.model.InformeConsulta;
+import es.uniovi.miw.monitora.server.model.InformeTipoDestino;
+import es.uniovi.miw.monitora.server.model.LineaCron;
+import es.uniovi.miw.monitora.server.model.Planificacion;
+import es.uniovi.miw.monitora.server.model.Snapshot;
+import es.uniovi.miw.monitora.server.model.TipoDestino;
 
 public class PersistenceTest {
 

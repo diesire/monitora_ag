@@ -6,47 +6,46 @@ import javax.persistence.Persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.uniovi.miw.monitora.agent.client.MonitoraClient;
+
 public class MonitoraAgent {
-	public static final int CLIENT_ID = 1; //TODO: get from config file
+	public static final int CLIENT_ID = 1; // TODO: get from config file
 
 	private static Logger logger = LoggerFactory.getLogger(MonitoraAgent.class);
 
 	private Status status = Status.CREATED;
 
-	private MainThread mainThread;
+	private MonitoraClient client;
 
 	public MonitoraAgent() {
-		mainThread = new MainThread();
+		client = new MonitoraClient(CLIENT_ID);
+			
 	}
 
-	public void start() {
+	private void start() throws Exception {
 		logger.debug("start");
-		mainThread.start();
 		setStatus(Status.RUNNING);
+		
+		client.ping();
+		client.agente();
 	}
 
 	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	protected void setStatus(Status status) {
 		this.status = status;
 	}
 
-	public void stop() {
+	private void stop() {
 		logger.debug("stop");
 		if (getStatus() == Status.RUNNING) {
 			setStatus(Status.STOPPED);
-			mainThread.termitate();
-			// try {
-			// mainThread.join();
-			// } catch (InterruptedException e) {
-			// logger.error("mainThread Interrupted exception", e);
-			// }
 		}
 	}
 
-	public void test() {
+	private void test() {
 		try {
 			EntityManagerFactory emf = Persistence
 					.createEntityManagerFactory("monitora_ag");
@@ -58,7 +57,7 @@ public class MonitoraAgent {
 		}
 	}
 
-	public void exit() {
+	private void exit() {
 		logger.debug("exit");
 		if (getStatus() == Status.RUNNING) {
 			stop();
