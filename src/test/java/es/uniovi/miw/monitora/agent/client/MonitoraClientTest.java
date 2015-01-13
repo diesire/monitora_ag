@@ -23,11 +23,10 @@ public class MonitoraClientTest {
 
 	static Logger logger = LoggerFactory.getLogger(MonitoraClientTest.class);
 	private MonitoraClient mockedClient;
-	private MonitoraClient client = new MonitoraClient(TEST_CLIENT);
+	private MonitoraClient client = new MonitoraClient();
 
 	@Before
 	public void setUp() throws Exception {
-
 		Ack expectedAck = new Ack();
 		Agente expectedAgente = new Agente();
 
@@ -35,14 +34,13 @@ public class MonitoraClientTest {
 		expectedAgente.setAgenteId(TEST_CLIENT);
 
 		mockedClient = mock(client.getClass());
-		when(mockedClient.ping()).thenReturn(expectedAck);
-		when(mockedClient.agente()).thenReturn(expectedAgente);
+		when(mockedClient.ping(TEST_CLIENT)).thenReturn(expectedAck);
+		when(mockedClient.getAgente(TEST_CLIENT)).thenReturn(expectedAgente);
 	}
 
 	@Test
 	public void testPing() throws Exception {
-
-		Ack ack = mockedClient.ping();
+		Ack ack = mockedClient.ping(TEST_CLIENT);
 
 		assertNotNull(ack.getUpdate().getTime());
 		assertEquals(NOW, ack.getUpdate());
@@ -50,9 +48,8 @@ public class MonitoraClientTest {
 
 	@Test
 	public void testPingException() {
-
 		try {
-			client.ping();
+			client.ping(TEST_CLIENT);
 		} catch (Exception e) {
 			assertTrue(true);
 		}
@@ -60,19 +57,16 @@ public class MonitoraClientTest {
 
 	@Test
 	public void testAgente() throws Exception {
-
-		Agente agente = mockedClient.agente();
+		Agente agente = mockedClient.getAgente(TEST_CLIENT);
 		assertEquals(TEST_CLIENT, agente.getAgenteId());
 	}
-	
+
 	@Test
 	public void testAgenteException() {
-
 		try {
-			client.agente();
+			client.getAgente(TEST_CLIENT);
 		} catch (Exception e) {
 			assertTrue(true);
 		}
 	}
-
 }

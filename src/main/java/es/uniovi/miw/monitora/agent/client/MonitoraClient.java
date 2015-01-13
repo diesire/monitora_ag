@@ -1,73 +1,66 @@
 package es.uniovi.miw.monitora.agent.client;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.core.api.Ack;
+import es.uniovi.miw.monitora.core.snapshot.Snapshot;
+import es.uniovi.miw.monitora.server.core.IMonitoraServer;
 import es.uniovi.miw.monitora.server.model.Agente;
+import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 
-public class MonitoraClient {
+public class MonitoraClient implements IMonitoraServer {
 
 	static private Logger logger = LoggerFactory
 			.getLogger(MonitoraClient.class);
 
-	private int agenteId;
 	private WebTarget target;
 
-	public MonitoraClient(int agenteId) {
+	public MonitoraClient() {
+		String uri = "http://localhost:8080/monitora_sv/rest/";
+		logger.trace("Monitora client created. Uri: {}", uri);
 
-		this.agenteId = agenteId;
-		Client restClient = ClientBuilder.newClient();
-		target = restClient.target("http://localhost:8080/monitora_sv/rest/");
+		target = ClientBuilder.newClient().target(uri);
 	}
 
-	public Ack ping() throws Exception {
-
+	@Override
+	public Ack ping(int agenteId) throws BusinessException {
 		try {
-
+			logger.trace("client.ping({})", agenteId);
 			Ack ack = target.path("c2/ping/" + agenteId).request()
 					.header("Content-Type", MediaType.APPLICATION_JSON)
 					.get(Ack.class);
 
 			return ack;
 		} catch (Exception e) {
-
-			// XXX handle ConnectException
-			throw new Exception(e);
+			logger.debug("Client error thrown", e);
+			throw new BusinessException(e);
 		}
 	}
 
-	public Agente agente() throws Exception {
-
-		// try {
-		//
-		// Agente agent = target.path("c2/agente/" + agenteId).request()
-		// .header("Content-Type", MediaType.APPLICATION_JSON)
-		// .get(Agente.class);
-		//
-		// return agent;
-		// } catch (Exception e) {
-		//
-		// // XXX handle ConnectException
-		// throw new Exception(e);
-		// }
-
-		logger.trace("Agente[{}]", agenteId);
-		Response response = target.path("c2/agente/" + agenteId)
-				.request(MediaType.APPLICATION_JSON_TYPE).get();
-
-			Agente agente = response.readEntity(Agente.class);
-			return agente;
+	@Override
+	public void setSnapshot(int agenteId, Snapshot snapshot)
+			throws BusinessException {
+		// TODO Auto-generated method stub
+		throw new BusinessException("Method not implemented");
 	}
 
-	public static void main(String[] args) throws Exception {
-//			Ack ack = new MonitoraClient(-1).ping();
-			Agente agente = new MonitoraClient(-1).agente();
+	@Override
+	public Agente getAgente(int agenteId) throws BusinessException {
+		logger.trace("client.getAgente({})", agenteId);
+		try {
+			Agente agent = target.path("c2/agente/" + agenteId).request()
+					.header("Content-Type", MediaType.APPLICATION_JSON)
+					.get(Agente.class);
+
+			return agent;
+		} catch (Exception e) {
+			logger.debug("Client error thrown", e);
+			throw new BusinessException(e);
+		}
 	}
 }

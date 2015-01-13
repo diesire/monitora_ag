@@ -15,19 +15,14 @@ public class MonitoraAgent {
 
 	private Status status = Status.CREATED;
 
-	private MonitoraClient client;
-
-	public MonitoraAgent() {
-		client = new MonitoraClient(CLIENT_ID);
-			
-	}
+	private MonitoraClient client = new MonitoraClient();
 
 	private void start() throws Exception {
 		logger.debug("start");
 		setStatus(Status.RUNNING);
-		
-		client.ping();
-		client.agente();
+
+		client.ping(CLIENT_ID);
+		client.getAgente(CLIENT_ID);
 	}
 
 	public Status getStatus() {

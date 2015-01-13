@@ -27,12 +27,10 @@ public class DBManager {
 		server = new org.hsqldb.Server();
 
 		try {
-
 			server.setProperties(props);
 			server.start();
 			setStatus(Status.RUNNING);
 		} catch (Exception e) {
-
 			logger.error("Error starting DB server", e);
 		}
 	}
