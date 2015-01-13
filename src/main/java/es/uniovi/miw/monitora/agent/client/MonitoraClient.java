@@ -62,22 +62,12 @@ public class MonitoraClient {
 		Response response = target.path("c2/agente/" + agenteId)
 				.request(MediaType.APPLICATION_JSON_TYPE).get();
 
-		try {
 			Agente agente = response.readEntity(Agente.class);
 			return agente;
-		} catch (Exception e) {
-			logger.error("Error deserializating object", e);
-		}
-		return null;
 	}
 
-	public static void main(String[] args) {
-		try {
-			Ack ack = new MonitoraClient(-1).ping();
+	public static void main(String[] args) throws Exception {
+//			Ack ack = new MonitoraClient(-1).ping();
 			Agente agente = new MonitoraClient(-1).agente();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

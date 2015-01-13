@@ -7,6 +7,7 @@
 			<access>FIELD</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
+	<package>es.uniovi.miw.monitora.server.model</package>
 	<named-query name="Tcon1.findAll">
 		<query>SELECT t FROM Tcon1 t</query>
 	</named-query>

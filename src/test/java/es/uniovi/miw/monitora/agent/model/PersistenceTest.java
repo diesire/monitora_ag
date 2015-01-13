@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.uniovi.miw.monitora.agent.DBManager;
 import es.uniovi.miw.monitora.agent.MonitoraAgent;
 import es.uniovi.miw.monitora.server.model.Agente;
 import es.uniovi.miw.monitora.server.model.Cliente;
@@ -54,12 +55,12 @@ public class PersistenceTest {
 	private LineaCron linea2;
 	private InfPlanDest infoPlanDest;
 	private static MonitoraAgent monitoraAgent;
+	private static DBManager dbm = new DBManager();
 
 	@BeforeClass
 	static public void setUpClass() {
 		logger.debug("setUpClass");
-		monitoraAgent = new MonitoraAgent();
-		monitoraAgent.start();
+		dbm.startDBServer();
 	}
 
 	@Before
@@ -80,8 +81,9 @@ public class PersistenceTest {
 	@AfterClass
 	static public void tearDownClass() {
 		logger.debug("tearDownClass");
-		monitoraAgent.exit();
-		monitoraAgent = null;
+//		monitoraAgent.exit();
+//		monitoraAgent = null;
+		dbm.closeDBServer();
 	}
 
 	@Test
