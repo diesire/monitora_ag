@@ -1,4 +1,4 @@
-package es.uniovi.miw.monitora.agent;
+package es.uniovi.miw.monitora.agent.core;
 
 public enum Status {
 	CREATED("Created"), RUNNING("Running"), STOPPED("Stopped"), TERMINATED(
