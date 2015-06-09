@@ -9,11 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.core.snapshot.Snapshot;
-import es.uniovi.miw.monitora.server.core.IMonitoraServer;
 import es.uniovi.miw.monitora.server.model.Agente;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 
-public class MonitoraClient implements IMonitoraServer {
+public class MonitoraClient{
 
 	static private Logger logger = LoggerFactory
 			.getLogger(MonitoraClient.class);
@@ -27,7 +26,6 @@ public class MonitoraClient implements IMonitoraServer {
 		target = ClientBuilder.newClient().target(uri);
 	}
 
-	@Override
 	public Ack ping(int agenteId) throws BusinessException {
 		try {
 			logger.trace("client.ping({})", agenteId);
@@ -42,14 +40,12 @@ public class MonitoraClient implements IMonitoraServer {
 		}
 	}
 
-	@Override
 	public void setSnapshot(int agenteId, Snapshot snapshot)
 			throws BusinessException {
 		// TODO Auto-generated method stub
 		throw new BusinessException("Method not implemented");
 	}
 
-	@Override
 	public Agente getAgente(int agenteId) throws BusinessException {
 		logger.trace("client.getAgente({})", agenteId);
 		try {
