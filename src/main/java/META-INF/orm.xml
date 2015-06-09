@@ -11,9 +11,9 @@
 	<named-query name="Tcon1.findAll">
 		<query>SELECT t FROM Tcon1 t</query>
 	</named-query>
-	<named-query name="LogError.findAll">
-		<query>SELECT l FROM LogError l</query>
-	</named-query>
+<!-- 	<named-query name="LogError.findAll"> -->
+<!-- 		<query>SELECT l FROM LogError l</query> -->
+<!-- 	</named-query> -->
 	<named-query name="InformeConsulta.findAll">
 		<query>SELECT i FROM InformeConsulta i</query>
 	</named-query>
