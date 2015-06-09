@@ -1,6 +1,8 @@
-package es.uniovi.miw.monitora.agent.model;
+package es.uniovi.miw.monitora.agent.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Date;
 import java.util.LinkedList;
@@ -19,8 +21,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import es.uniovi.miw.monitora.agent.DBManager;
-import es.uniovi.miw.monitora.agent.MonitoraAgent;
 import es.uniovi.miw.monitora.server.model.Agente;
 import es.uniovi.miw.monitora.server.model.Cliente;
 import es.uniovi.miw.monitora.server.model.Consulta;
@@ -54,11 +54,10 @@ public class PersistenceTest {
 	private LineaCron linea1;
 	private LineaCron linea2;
 	private InfPlanDest infoPlanDest;
-	private static MonitoraAgent monitoraAgent;
 	private static DBManager dbm = new DBManager();
 
 	@BeforeClass
-	static public void setUpClass() {
+	static public void setUpClass() throws Exception {
 		logger.debug("setUpClass");
 		dbm.startDBServer();
 	}
@@ -81,8 +80,8 @@ public class PersistenceTest {
 	@AfterClass
 	static public void tearDownClass() {
 		logger.debug("tearDownClass");
-//		monitoraAgent.exit();
-//		monitoraAgent = null;
+		// monitoraAgent.exit();
+		// monitoraAgent = null;
 		dbm.closeDBServer();
 	}
 
@@ -380,9 +379,9 @@ public class PersistenceTest {
 		infoPlanDest.setFUltimaModificacion(fecha);
 
 		// link
-		informePadre.addInfPlanDest(infoPlanDest);
-		planificacion.addInfPlanDest(infoPlanDest);
-		destino.addInfPlanDest(infoPlanDest);
+		infoPlanDest.linkDestino(destino);
+		infoPlanDest.linkInforme(informePadre);
+		infoPlanDest.linkPlanificacion(planificacion);
 
 		planificacion.addLineaCron(linea1);
 		planificacion.addLineaCron(linea2);
