@@ -1,7 +1,11 @@
 package es.uniovi.miw.monitora.agent.client;
 
+import java.util.List;
+
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -12,7 +16,7 @@ import es.uniovi.miw.monitora.core.snapshot.Snapshot;
 import es.uniovi.miw.monitora.server.model.Agente;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 
-public class MonitoraClient{
+public class MonitoraClient {
 
 	static private Logger logger = LoggerFactory
 			.getLogger(MonitoraClient.class);
@@ -54,6 +58,21 @@ public class MonitoraClient{
 					.get(Agente.class);
 
 			return agent;
+		} catch (Exception e) {
+			logger.debug("Client error thrown", e);
+			throw new BusinessException(e);
+		}
+	}
+
+	public List<Agente> getAgentes() throws BusinessException {
+		logger.trace("client.getAgentes()");
+		try {
+			List<Agente> agentes = target.path("c2/agentes").request()
+					.header("Content-Type", MediaType.APPLICATION_JSON)
+					.get(new GenericType<List<Agente>>() {
+					});
+
+			return agentes;
 		} catch (Exception e) {
 			logger.debug("Client error thrown", e);
 			throw new BusinessException(e);

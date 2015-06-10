@@ -1,10 +1,13 @@
 package es.uniovi.miw.monitora.agent.core;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.agent.client.MonitoraClient;
 import es.uniovi.miw.monitora.agent.persistence.DBManager;
+import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.server.conf.ServicesFactory;
 import es.uniovi.miw.monitora.server.core.impl.agente.FindAgenteById;
 import es.uniovi.miw.monitora.server.model.Agente;
@@ -25,15 +28,23 @@ public class MonitoraAgent implements IMonitoraAgent {
 			dbm.startDBServer();
 			setStatus(Status.RUNNING);
 
-			client.ping(CLIENT_ID);
-			Agente agente = client.getAgente(CLIENT_ID);
+			List<Agente> agentes;
+			agentes = client.getAgentes();
 
-			if (agente != null) {
-				if (ServicesFactory.getAgenteService().findAgenteById(-1) != null) {
-					logger.warn("Agente already in DB");
-				}
-				ServicesFactory.getAgenteService().updateAgente(agente);
+			Ack ack = client.ping(100);
+			if (ack != null) {
+				Agente agente = client.getAgente(100);
 			}
+
+			// Agente agente = client.getAgente(CLIENT_ID);
+			//
+			// if (agente != null) {
+			// if (ServicesFactory.getAgenteService().findAgenteById(-1) !=
+			// null) {
+			// logger.warn("Agente already in DB");
+			// }
+			// ServicesFactory.getAgenteService().updateAgente(agente);
+			// }
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage());
 			throw new Exception(e);
