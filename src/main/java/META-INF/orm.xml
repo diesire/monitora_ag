@@ -11,20 +11,23 @@
 	<named-query name="Tcon1.findAll">
 		<query>SELECT t FROM Tcon1 t</query>
 	</named-query>
-<!-- 	<named-query name="LogError.findAll"> -->
-<!-- 		<query>SELECT l FROM LogError l</query> -->
-<!-- 	</named-query> -->
 	<named-query name="InformeConsulta.findAll">
 		<query>SELECT i FROM InformeConsulta i</query>
 	</named-query>
 	<named-query name="Snapshot.findAll">
 		<query>SELECT s FROM Snapshot s</query>
 	</named-query>
+	<named-query name="Snapshot.getNextSnapshotId">
+		<query>select max(s.id.idSnapshot) + 1 from Snapshot s</query>
+	</named-query>
 	<named-query name="InformeTipoDestino.findAll">
 		<query>SELECT i FROM InformeTipoDestino i</query>
 	</named-query>
 	<named-query name="Destino.findAll">
 		<query>SELECT d FROM Destino d</query>
+	</named-query>
+	<named-query name="Destino.getNextDestinoId">
+		<query>select max(d.id.idDestino) + 1 from Destino d</query>
 	</named-query>
 	<named-query name="InfPlanDestBorrado.findAll">
 		<query>SELECT i FROM InfPlanDestBorrado i</query>
