@@ -32,23 +32,14 @@ public class MonitoraAgent implements IMonitoraAgent {
 			db.start();
 			setStatus(Status.RUNNING);
 
-			List<Agente> agentes;
-			agentes = client.getAgentes();
-
-			Ack ack = client.ping(100);
+			Ack ack = client.ping(50);
 			if (ack != null) {
-				Agente agente = client.getAgente(100);
-			}
+				Agente agente = client.getAgentes().iterator().next();
 
-			// Agente agente = client.getAgente(CLIENT_ID);
-			//
-			// if (agente != null) {
-			// if (ServicesFactory.getAgenteService().findAgenteById(-1) !=
-			// null) {
-			// logger.warn("Agente already in DB");
-			// }
-			// ServicesFactory.getAgenteService().updateAgente(agente);
-			// }
+				if (agente != null) {
+					ServicesFactory.getAgenteService().updateAgente(agente);
+				}
+			}
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage());
 			throw new Exception(e);
@@ -78,7 +69,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 			stop();
 		}
 
-//		dbm.closeDBServer();
+		// dbm.closeDBServer();
 		setStatus(Status.TERMINATED);
 	}
 
