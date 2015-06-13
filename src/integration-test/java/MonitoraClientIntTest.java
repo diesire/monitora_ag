@@ -1,5 +1,4 @@
 import static es.uniovi.miw.monitora.server.ui.util.TestUtils.AGENTE_ID_INVALID;
-import static es.uniovi.miw.monitora.server.ui.util.TestUtils.IP_LOCAL;
 import static es.uniovi.miw.monitora.server.ui.util.TestUtils.NOW;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.agent.client.MonitoraClient;
-import es.uniovi.miw.monitora.agent.persistence.DBManager;
 import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;
 import es.uniovi.miw.monitora.server.conf.ServicesFactory;
