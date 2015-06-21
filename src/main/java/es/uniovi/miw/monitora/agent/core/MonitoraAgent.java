@@ -57,10 +57,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 		try {
 			db.start();
 			setStatus(Status.RUNNING);
-
-			updateTasks();
 			schedulerService.start();
-
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage());
 			throw new Exception(e);
@@ -70,19 +67,25 @@ public class MonitoraAgent implements IMonitoraAgent {
 	public void sendResults() throws BusinessException {
 		dumps = snapManager.dump();
 		for (Entry<Snapshot, String> entry : dumps.entrySet()) {
+			try {
+				Path base = Paths.get(Conf.get("snapshot.path"));
+				Path zFile = Paths.get(entry.getValue());
+				Path relative = base.relativize(zFile);
+				Path remoteZFile = Paths.get(Conf.get("server.snapshot.path"))
+						.resolve(relative);
 
-			Path base = Paths.get(Conf.get("snapshot.path"));
-			Path zFile = Paths.get(entry.getValue());
-			Path relative = base.relativize(zFile);
-			Path remoteZFile = Paths.get(Conf.get("server.snapshot.path"))
-					.resolve(relative);
+				ScpUtils.copyTo(Conf.get("ssh.user"), Conf.get("ssh.password"),
+						Conf.get("ssh.host"),
+						new Integer(Conf.get("ssh.port")).intValue(),
+						remoteZFile.toString(), entry.getValue());
 
-			ScpUtils.copyTo(Conf.get("user"), Conf.get("password"),
-					Conf.get("host"), new Integer(Conf.get("port")).intValue(),
-					remoteZFile.toString(), entry.getValue());
+				client.setSnapshot(agenteId, entry.getKey());
 
-			client.setSnapshot(agenteId, entry.getKey());
-			// TODO if send OK, delete file and entry
+				// TODO if send OK, delete file and entry
+
+			} catch (Exception e) {
+				// try next entry
+			}
 		}
 	}
 
@@ -117,7 +120,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 		return ag;
 	}
 
-	private void updateAgent() {
+	private void updateAgent() throws BusinessException {
 		try {
 			Agente updateAgente = client.getAgente(agenteId);
 			logger.info("Agent {} retrieved", agenteId);
@@ -127,7 +130,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 			ServicesFactory.getAgenteService().updateAgente(updateAgente);
 			logger.info("Agente {} saved", agenteId);
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw new BusinessException(e);
 		}
 	}
 

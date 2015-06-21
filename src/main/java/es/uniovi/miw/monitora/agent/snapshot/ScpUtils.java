@@ -20,7 +20,7 @@ public class ScpUtils {
 		try {
 
 			JSch jsch = new JSch();
-			jsch.setKnownHosts(Conf.get("known_hosts.path"));
+			jsch.setKnownHosts(Conf.get("ssh.known_hosts.path"));
 			Session session = jsch.getSession(user, host, 22);
 
 			// username and password will be given via UserInfo interface.
