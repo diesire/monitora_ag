@@ -3,17 +3,18 @@ package es.uniovi.miw.monitora.agent.client;
 import java.util.List;
 
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.core.api.Ack;
-import es.uniovi.miw.monitora.core.snapshot.Snapshot;
 import es.uniovi.miw.monitora.server.model.Agente;
+import es.uniovi.miw.monitora.server.model.Snapshot;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 
 public class MonitoraClient {
@@ -46,7 +47,11 @@ public class MonitoraClient {
 
 	public void setSnapshot(int agenteId, Snapshot snapshot)
 			throws BusinessException {
-		// TODO Auto-generated method stub
+		Entity<Snapshot> entity = Entity.entity(snapshot,
+				MediaType.APPLICATION_JSON_TYPE);
+		Response response = target.path("c2/snapshot/" + agenteId).request()
+				.header("Content-Type", MediaType.APPLICATION_JSON)
+				.post(entity);
 		throw new BusinessException("Method not implemented");
 	}
 

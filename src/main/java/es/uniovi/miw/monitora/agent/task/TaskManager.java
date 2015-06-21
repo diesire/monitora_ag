@@ -15,5 +15,4 @@ public interface TaskManager {
 	void add(Task task);
 
 	int size();
-
 }

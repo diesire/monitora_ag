@@ -1,6 +1,6 @@
 package es.uniovi.miw.monitora.agent.task.quartz;
 
-import java.util.GregorianCalendar;
+import java.net.URI;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.agent.snapshot.SnapshotManager;
-import es.uniovi.miw.monitora.core.snapshot.TaskResult;
+import es.uniovi.miw.monitora.server.model.Consulta;
+import es.uniovi.miw.monitora.server.model.Snapshot;
+import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
+import es.uniovi.miw.monitora.server.persistence.util.PersistenceService;
 
 public class SnapshotJobListener extends JobListenerSupport {
 
@@ -18,6 +21,7 @@ public class SnapshotJobListener extends JobListenerSupport {
 
 	private String name;
 	private SnapshotManager snapshotManager;
+	private PersistenceService db;
 
 	public SnapshotJobListener(String name, SnapshotManager snapshotManager) {
 		this.name = name;
@@ -32,14 +36,28 @@ public class SnapshotJobListener extends JobListenerSupport {
 	@Override
 	public void jobWasExecuted(JobExecutionContext context,
 			JobExecutionException jobException) {
-		TaskResult result = snapshotManager.createResult(context
-				.getJobDetail().getJobDataMap().getString("resultType"), context.getResult());
-		result.startDate = new GregorianCalendar();
-		result.startDate.setTime(context.getFireTime());
-		result.taskId = context.getJobDetail().getJobDataMap()
-				.getString("taskId");
-		logger.debug("created {}", result);
-
-		snapshotManager.addResult(result);
+		ConsultaJob jobResult = (ConsultaJob) context.getResult();
+		if (jobResult == null) {
+			logger.error("Job failed", context);
+		}
+		logger.info("Job done");
+		try {
+			snapshotManager.add(jobResult);
+			logger.info("jobResult added");
+		} catch (BusinessException e) {
+			logger.error("jobResult failed" + e.getLocalizedMessage());
+		}
 	}
+
+	@Override
+	public void jobToBeExecuted(JobExecutionContext context) {
+		super.jobToBeExecuted(context);
+		logger.info("TOBE" + context);
+	}
+
+	@Override
+	public void jobExecutionVetoed(JobExecutionContext context) {
+		logger.warn("Vetoed" + context);
+	}
+
 }
