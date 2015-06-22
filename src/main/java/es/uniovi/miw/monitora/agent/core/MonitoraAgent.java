@@ -84,7 +84,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 				// TODO if send OK, delete file and entry
 
 			} catch (Exception e) {
-				// try next entry
+				logger.error(e.getLocalizedMessage());
 			}
 		}
 	}
