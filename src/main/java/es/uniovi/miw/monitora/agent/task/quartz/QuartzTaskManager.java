@@ -160,6 +160,7 @@ public class QuartzTaskManager implements SchedulerService {
 					.usingJobData("sql_create", consulta.getSqlCreate())
 					.usingJobData("sql_select", consulta.getSqlSelect())
 					.usingJobData("sql_insert", consulta.getSqlInsert())
+					.usingJobData("sql_delete", consulta.getSqlDelete())
 					.usingJobData("idCliente",
 							destino.getCliente().getIdCliente())
 					.usingJobData("idDestino", destino.getId().getIdDestino())
@@ -170,8 +171,9 @@ public class QuartzTaskManager implements SchedulerService {
 					.withIdentity(jobName, groupName)
 					.usingJobData("tabla", consulta.getTabla())
 					.usingJobData("sql_create", consulta.getSqlCreate())
-					.usingJobData("comando_so", consulta.getSqlSelect())
+					.usingJobData("comando_so", consulta.getComandoSo())
 					.usingJobData("sql_insert", consulta.getSqlInsert())
+					.usingJobData("sql_delete", consulta.getSqlDelete())
 					.usingJobData("idCliente",
 							destino.getCliente().getIdCliente())
 					.usingJobData("idDestino", destino.getId().getIdDestino())
