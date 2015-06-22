@@ -180,8 +180,9 @@ public class SnapshotManager {
 				dumpSnapshot(snap, tabla);
 			}
 
-				Path dir = Paths.get(getSnapshotDirName(snap));
-				Path zfile = dir.resolve(".zip");
+				
+				Path dir = base.resolve(getSnapshotDirName(snap));
+				Path zfile = base.resolve(getSnapshotDirName(snap)+".zip");
 				try {
 					ZipUtils.zipFolder(dir.toFile(), zfile.toFile());
 				} catch (IOException e) {
