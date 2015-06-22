@@ -19,6 +19,7 @@ public abstract class ConsultaJob implements Job {
 	private String tabla;
 	private String sql_create;
 	private String sql_insert;
+	private String sql_delete;
 	private Integer idCliente;
 	private Integer idDestino;
 	private Integer idInforme;
@@ -130,5 +131,13 @@ public abstract class ConsultaJob implements Job {
 
 	public void setIdConsulta(Integer idConsulta) {
 		this.idConsulta = idConsulta;
+	}
+
+	public String getSql_delete() {
+		return sql_delete;
+	}
+
+	public void setSql_delete(String sql_delete) {
+		this.sql_delete = sql_delete;
 	}
 }
