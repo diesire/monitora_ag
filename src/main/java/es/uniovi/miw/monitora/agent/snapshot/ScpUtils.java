@@ -42,7 +42,7 @@ public class ScpUtils {
 			channel.connect();
 
 			if (checkAck(in) != 0) {
-				System.exit(0);
+				throw new BusinessException("Ack error");
 			}
 
 			File _lfile = new File(localFile);
@@ -55,7 +55,7 @@ public class ScpUtils {
 				out.write(command.getBytes());
 				out.flush();
 				if (checkAck(in) != 0) {
-					System.exit(0);
+					throw new BusinessException("Ack error");
 				}
 			}
 
@@ -72,7 +72,7 @@ public class ScpUtils {
 			out.write(command.getBytes());
 			out.flush();
 			if (checkAck(in) != 0) {
-				System.exit(0);
+				throw new BusinessException("Ack error");
 			}
 
 			// send a content of lfile
@@ -91,14 +91,12 @@ public class ScpUtils {
 			out.write(buf, 0, 1);
 			out.flush();
 			if (checkAck(in) != 0) {
-				System.exit(0);
+				throw new BusinessException("Ack error");
 			}
 			out.close();
 
 			channel.disconnect();
 			session.disconnect();
-
-			System.exit(0);
 		} catch (Exception e) {
 			System.out.println(e);
 			try {
