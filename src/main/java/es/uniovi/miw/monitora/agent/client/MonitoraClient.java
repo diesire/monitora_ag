@@ -12,6 +12,9 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.server.model.Agente;
 import es.uniovi.miw.monitora.server.model.Snapshot;
@@ -47,12 +50,19 @@ public class MonitoraClient {
 
 	public void setSnapshot(int agenteId, Snapshot snapshot)
 			throws BusinessException {
+
+		logger.debug(pretty_print(snapshot));
+
 		Entity<Snapshot> entity = Entity.entity(snapshot,
 				MediaType.APPLICATION_JSON_TYPE);
-		Response response = target.path("c2/snapshot/" + agenteId).request()
-				.header("Content-Type", MediaType.APPLICATION_JSON)
-				.post(entity);
-		throw new BusinessException("Method not implemented");
+		String path = "c2/snapshot/" + agenteId;
+		Response response = target.path(path)
+				.request(MediaType.APPLICATION_JSON_TYPE).post(entity);
+
+		if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+			throw new BusinessException(response.getStatusInfo()
+					.getReasonPhrase());
+		}
 	}
 
 	public Agente getAgente(int agenteId) throws BusinessException {
@@ -81,6 +91,16 @@ public class MonitoraClient {
 		} catch (Exception e) {
 			logger.debug("Client error thrown", e);
 			throw new BusinessException(e);
+		}
+	}
+
+	private String pretty_print(Object object) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					object);
+		} catch (JsonProcessingException e) {
+			return "Can't pretty print JSON object";
 		}
 	}
 }

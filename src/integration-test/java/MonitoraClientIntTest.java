@@ -10,11 +10,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import es.uniovi.miw.monitora.agent.client.MonitoraClient;
 import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;
 import es.uniovi.miw.monitora.server.conf.ServicesFactory;
 import es.uniovi.miw.monitora.server.model.Agente;
+import es.uniovi.miw.monitora.server.model.Snapshot;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 import es.uniovi.miw.monitora.server.persistence.util.PersistenceService;
 import es.uniovi.miw.monitora.server.ui.util.TestUtils;
@@ -73,5 +77,13 @@ public class MonitoraClientIntTest {
 		for (Agente agente : client.getAgentes()) {
 			testUtils.testHierarchy(agente);
 		}
+	}
+
+	@Test
+	public void testSetSnapshot() throws BusinessException {
+		Agente ag = testUtils.createHierarchy();
+		Snapshot snap = ag.getDestinos().iterator().next().getSnapshots()
+				.iterator().next();
+		client.setSnapshot(ag.getAgenteId(), snap);
 	}
 }
