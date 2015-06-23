@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.sun.rowset.WebRowSetImpl;
 
 import es.uniovi.miw.monitora.agent.task.quartz.ConsultaJob;
+import es.uniovi.miw.monitora.core.utils.ZipUtils;
 import es.uniovi.miw.monitora.server.conf.Conf;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;
 import es.uniovi.miw.monitora.server.conf.ServicesFactory;
@@ -105,7 +106,7 @@ public class SnapshotManager {
 			prop.store(fw, null);
 			fw.close();
 
-			dumpToXML(tabla, snapshotFile);
+			db.dumpToXML(tabla, snapshotFile);
 
 			return snapshotFile.toAbsolutePath().toUri();
 
@@ -136,26 +137,11 @@ public class SnapshotManager {
 				dateFormat.format(snapshot.getFecha()));
 	}
 
+	// TODO deleteme
 	protected String getSnapshotDirName(Snapshot snapshot) {
 		return MessageFormat.format("snapshot-{0}-{1}-{2}", snapshot.getId()
 				.getIdCliente(), snapshot.getId().getIdDestino(), snapshot
 				.getId().getIdSnapshot());
-	}
-
-	protected synchronized void dumpToXML(String tabla, Path tempFile)
-			throws BusinessException {
-		try {
-			WebRowSet webRS = new WebRowSetImpl();
-			webRS.setCommand("SELECT * FROM " + tabla);
-			webRS.execute(db.getConnection());
-			FileWriter fw = new FileWriter(tempFile.toFile());
-			webRS.writeXml(fw);
-			fw.close();
-			webRS.close();
-
-		} catch (SQLException | IOException e) {
-			throw new BusinessException(e);
-		}
 	}
 
 	public void add(ConsultaJob jobResult) throws BusinessException {
@@ -180,14 +166,13 @@ public class SnapshotManager {
 				dumpSnapshot(snap, tabla);
 			}
 
-				
-				Path dir = base.resolve(getSnapshotDirName(snap));
-				Path zfile = base.resolve(getSnapshotDirName(snap)+".zip");
-				try {
-					ZipUtils.zipFolder(dir.toFile(), zfile.toFile());
-				} catch (IOException e) {
-					throw new BusinessException(e);
-				}
+			Path dir = base.resolve(getSnapshotDirName(snap));
+			Path zfile = base.resolve(getSnapshotDirName(snap) + ".zip");
+			try {
+				ZipUtils.zipFolder(dir.toFile(), zfile.toFile());
+			} catch (IOException e) {
+				throw new BusinessException(e);
+			}
 
 			dumps.put(snap, zfile.toString());
 		}
