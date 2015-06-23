@@ -34,3 +34,22 @@ Client TODO:
 ------------
 *  Cifrado a nivel de https? encriptación de datos? los dos?
 *  
+
+
+
+
+XXX
+=========
+
+3 capas
+Capa 1: app con hilos o lo que sea
+Capa 2: negocio: cliente(ping, update, snapshot), scheduler, shell
+Capa 3: BBDD, cliente
+??? Modelo??? entre medias??? con lógica osin ella??? 
+
+* Arrancar servicios: BD, Scheduler
+* Hacer ping cada X tiempo
+* Actualizar datos del agente
+  * Con estos datos ejecutar scheduler
+  * Cuando lo tenga todo, crear snapshot
+  * Enviar snapshot

@@ -5,8 +5,28 @@
 	version="2.0">
 	<persistence-unit name="monitora_ag" transaction-type="RESOURCE_LOCAL">
 		<mapping-file>META-INF/orm.xml</mapping-file>
+		<class>es.uniovi.miw.monitora.server.model.Agente</class>
+		<class>es.uniovi.miw.monitora.server.model.Cliente</class>
+		<class>es.uniovi.miw.monitora.server.model.Consulta</class>
+		<class>es.uniovi.miw.monitora.server.model.Destino</class>
+		<class>es.uniovi.miw.monitora.server.model.InfPlanDest</class>
+		<class>es.uniovi.miw.monitora.server.model.InfPlanDestBorrado</class>
+		<class>es.uniovi.miw.monitora.server.model.Informe</class>
+		<class>es.uniovi.miw.monitora.server.model.InformeConsulta</class>
+		<class>es.uniovi.miw.monitora.server.model.InformeTipoDestino</class>
+		<class>es.uniovi.miw.monitora.server.model.LineaCron</class>
+		<class>es.uniovi.miw.monitora.server.model.Planificacion</class>
+		<class>es.uniovi.miw.monitora.server.model.Snapshot</class>
+		<class>es.uniovi.miw.monitora.server.model.Tcon1</class>
+		<class>es.uniovi.miw.monitora.server.model.TipoDestino</class>
+		<class>es.uniovi.miw.monitora.server.model.keys.DestinoPK</class>
+		<class>es.uniovi.miw.monitora.server.model.keys.InfPlanDestBorradoPK</class>
+		<class>es.uniovi.miw.monitora.server.model.keys.InfPlanDestPK</class>
+		<class>es.uniovi.miw.monitora.server.model.keys.InformeConsultaPK</class>
+		<class>es.uniovi.miw.monitora.server.model.keys.InformeTipoDestinoPK</class>
+		<class>es.uniovi.miw.monitora.server.model.keys.SnapshotPK</class>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost/monitoraag" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost:9002/monitoraag" />
 			<property name="javax.persistence.jdbc.user" value="SA" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
