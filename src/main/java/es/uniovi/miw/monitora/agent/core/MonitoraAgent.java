@@ -52,7 +52,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 		agenteId = new Integer(Conf.get("agente.id"));
 	}
 
-	public void start() throws Exception {
+	public void start() throws BusinessException {
 		logger.debug("start");
 		try {
 			db.start();
@@ -60,7 +60,7 @@ public class MonitoraAgent implements IMonitoraAgent {
 			schedulerService.start();
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage());
-			throw new Exception(e);
+			throw new BusinessException(e);
 		}
 	}
 
@@ -89,12 +89,12 @@ public class MonitoraAgent implements IMonitoraAgent {
 		}
 	}
 
-	public void updateTasks() throws BusinessException {
-		ack = ping();
+	public void pingServer() throws BusinessException {
+		ping();
+	}
 
-		if (ack != null) {
-			updateAgent();
-		}
+	public void updateTasks() throws BusinessException {
+		updateAgent();
 
 		agente = getAgente();
 		for (Destino destino : agente.getDestinos()) {

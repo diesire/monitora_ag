@@ -11,6 +11,7 @@ public class Main {
 		MonitoraAgent ag = new MonitoraAgent();
 		try {
 			ag.start();
+			ag.pingServer();
 			ag.updateTasks();
 			try {
 				TimeUnit.MINUTES.sleep(1);
