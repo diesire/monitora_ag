@@ -22,7 +22,7 @@ public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);
 	private static InteractiveThread interactiveThread;
 
-	@Parameter(names = "--help", help = true, description = "Help")
+	@Parameter(names = { "-h", "--help" }, help = true, description = "Print this usage message")
 	private boolean help;
 
 	@Parameter(names = { "-i", "--interactive" }, description = "Interactive mode")
@@ -57,10 +57,8 @@ public class App {
 		if (interactive) {
 			interactiveThread = new InteractiveThread(this);
 			interactiveThread.start();
-		}
-
-		addShutdownHook(this);
-		if (!interactive) {
+		} else {
+			addShutdownHook(this);
 			start();
 		}
 	}
@@ -101,6 +99,7 @@ public class App {
 	}
 
 	public void exit() throws BusinessException {
+		logger.debug("Bye, bye");
 		try {
 			monitoraAg.exit();
 
@@ -108,11 +107,11 @@ public class App {
 				interactiveThread.terminate();
 				interactiveThread.interrupt(); // Force stop, I/O thread
 			}
-			logger.debug("Bye, bye");
 
 		} catch (Exception e) {
 			throw new BusinessException(e);
 		}
+		System.exit(0);
 	}
 
 	public void help() {
@@ -184,14 +183,13 @@ class InteractiveThread extends Thread {
 		case "help":
 			System.out
 					.println("Interactive commands:\n"
+							+ "  start        Start agent\n"
+							+ "  ping         Check if server is online\n"							
+							+ "  update       Update agent by retrieving server info\n"
+							+ "  dump         Send agent information to server\n"
+							+ "  exit         Exit agent\n"
 							+ "  debug        Show app info\n"
-							+ "  start        Start client\n"
-							+ "  update       Update client by retrieving server info\n"
-							+ "  ping         Check if server is online\n"
-							+ "  dump         Send client information to server\n"
-							+ "  exit         Exit client\n"
-							+ "  help         Show client interactive commands\n"
-							+ "  start        Start client\n");
+							+ "  help         Print this usage message");
 			break;
 		case "debug":
 			app.debug();
