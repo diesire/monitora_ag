@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 
 import es.uniovi.miw.monitora.agent.core.MonitoraAgent;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
@@ -21,7 +22,7 @@ public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);
 	private static InteractiveThread interactiveThread;
 
-	@Parameter(names = "--help", help = true)
+	@Parameter(names = "--help", help = true, description = "Help")
 	private boolean help;
 
 	@Parameter(names = { "-i", "--interactive" }, description = "Interactive mode")
@@ -33,18 +34,21 @@ public class App {
 	private JCommander jc;
 
 	public App(String[] args) throws BusinessException {
-		monitoraAg = new MonitoraAgent();
 		jc = new JCommander(this);
 		jc.setProgramName("monitora_ag");
 
-		if (args.length > 1) {
+		try {
 			jc.parse(args);
+		} catch (ParameterException e) {
+			System.out.println(e.getLocalizedMessage());
+			help();
 		}
 
 		if (help) {
 			help();
-			return;
 		}
+
+		monitoraAg = new MonitoraAgent();
 
 		if (debug) {
 			debug();
@@ -113,6 +117,7 @@ public class App {
 
 	public void help() {
 		jc.usage();
+		System.exit(0);
 	}
 
 	public void debug() {
@@ -156,6 +161,8 @@ class InteractiveThread extends Thread {
 	@Override
 	public void run() {
 		logger.debug("interactive mode");
+		System.out
+				.println("MonitORA agent interactive mode. To see comands type 'help'");
 		running = true;
 
 		while (running) {

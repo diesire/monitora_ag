@@ -1,27 +1,17 @@
 package es.uniovi.miw.monitora.agent.core;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.jcraft.jsch.*;
 
 import es.uniovi.miw.monitora.agent.client.MonitoraClient;
 import es.uniovi.miw.monitora.agent.snapshot.ScpUtils;
 import es.uniovi.miw.monitora.agent.snapshot.SnapshotManager;
-import es.uniovi.miw.monitora.agent.task.quartz.ConsultaJob;
-import es.uniovi.miw.monitora.agent.task.quartz.SnapshotJobListener;
 import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.server.conf.Conf;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;

@@ -1,23 +1,15 @@
 package es.uniovi.miw.monitora.agent.snapshot;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.Date;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import es.uniovi.miw.monitora.core.api.Ack;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;
 import es.uniovi.miw.monitora.server.conf.ServicesFactory;
 import es.uniovi.miw.monitora.server.model.Agente;

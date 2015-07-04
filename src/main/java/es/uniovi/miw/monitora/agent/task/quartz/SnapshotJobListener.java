@@ -1,7 +1,5 @@
 package es.uniovi.miw.monitora.agent.task.quartz;
 
-import java.net.URI;
-
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.listeners.JobListenerSupport;
@@ -9,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.agent.snapshot.SnapshotManager;
-import es.uniovi.miw.monitora.server.model.Consulta;
-import es.uniovi.miw.monitora.server.model.Snapshot;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 import es.uniovi.miw.monitora.server.persistence.util.PersistenceService;
 

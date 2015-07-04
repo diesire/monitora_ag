@@ -2,8 +2,6 @@ package es.uniovi.miw.monitora.agent.task.quartz;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import es.uniovi.miw.monitora.agent.shell.apache.ApacheCommomsExecManager;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 
