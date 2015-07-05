@@ -7,11 +7,9 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,19 +17,14 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.sql.rowset.WebRowSet;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.rowset.WebRowSetImpl;
 
 import es.uniovi.miw.monitora.agent.task.quartz.ConsultaJob;
 import es.uniovi.miw.monitora.core.utils.ZipUtils;
 import es.uniovi.miw.monitora.server.conf.Conf;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;
 import es.uniovi.miw.monitora.server.conf.ServicesFactory;
-import es.uniovi.miw.monitora.server.model.Consulta;
 import es.uniovi.miw.monitora.server.model.Destino;
 import es.uniovi.miw.monitora.server.model.Informe;
 import es.uniovi.miw.monitora.server.model.Snapshot;

@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.uniovi.miw.monitora.agent.core.SchedulerService;
-import es.uniovi.miw.monitora.server.model.Cliente;
 import es.uniovi.miw.monitora.server.model.Consulta;
 import es.uniovi.miw.monitora.server.model.Destino;
 import es.uniovi.miw.monitora.server.model.InfPlanDest;

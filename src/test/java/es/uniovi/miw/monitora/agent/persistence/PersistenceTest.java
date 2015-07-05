@@ -1,39 +1,5 @@
 package es.uniovi.miw.monitora.agent.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import es.uniovi.miw.monitora.server.model.Agente;
-import es.uniovi.miw.monitora.server.model.Cliente;
-import es.uniovi.miw.monitora.server.model.Consulta;
-import es.uniovi.miw.monitora.server.model.Destino;
-import es.uniovi.miw.monitora.server.model.InfPlanDest;
-import es.uniovi.miw.monitora.server.model.Informe;
-import es.uniovi.miw.monitora.server.model.InformeConsulta;
-import es.uniovi.miw.monitora.server.model.InformeTipoDestino;
-import es.uniovi.miw.monitora.server.model.LineaCron;
-import es.uniovi.miw.monitora.server.model.Planificacion;
-import es.uniovi.miw.monitora.server.model.Snapshot;
-import es.uniovi.miw.monitora.server.model.TipoDestino;
-
 public class PersistenceTest {
 
 	// static Logger logger = LoggerFactory.getLogger(PersistenceTest.class);

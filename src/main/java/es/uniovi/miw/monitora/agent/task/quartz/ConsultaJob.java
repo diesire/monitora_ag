@@ -8,9 +8,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import es.uniovi.miw.monitora.agent.core.AgentServiceFactory;
 import es.uniovi.miw.monitora.server.conf.PersistenceFactory;
-import es.uniovi.miw.monitora.server.conf.ServicesFactory;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 import es.uniovi.miw.monitora.server.persistence.util.PersistenceService;
 

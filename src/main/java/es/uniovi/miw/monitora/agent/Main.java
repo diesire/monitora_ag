@@ -3,7 +3,6 @@ package es.uniovi.miw.monitora.agent;
 import java.util.concurrent.TimeUnit;
 
 import es.uniovi.miw.monitora.agent.core.MonitoraAgent;
-import es.uniovi.miw.monitora.agent.core.Status;
 import es.uniovi.miw.monitora.server.model.exceptions.BusinessException;
 
 public class Main {
@@ -11,6 +10,7 @@ public class Main {
 		MonitoraAgent ag = new MonitoraAgent();
 		try {
 			ag.start();
+			ag.pingServer();
 			ag.updateTasks();
 			try {
 				TimeUnit.MINUTES.sleep(1);
